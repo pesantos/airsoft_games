@@ -24,6 +24,7 @@ import { SeletorComponent } from './seletor/seletor.component';
 import { PainelDeSenhaComponent } from './painel-de-senha/painel-de-senha.component';
 import { MaletaComponent } from './maleta/maleta.component';
 import { TimerComponent } from './timer/timer.component';
+import { CaboComponent } from './cabo/cabo.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -34,7 +35,8 @@ import { TimerComponent } from './timer/timer.component';
     SeletorComponent,
     PainelDeSenhaComponent,
     MaletaComponent,
-    TimerComponent
+    TimerComponent,
+    CaboComponent
   ],
   imports: [
     BrowserModule,

@@ -1,3 +1,4 @@
+import { CaboComponent } from './cabo/cabo.component';
 import { MaletaComponent } from './maleta/maleta.component';
 import { SeletorComponent } from './seletor/seletor.component';
 import { PontosComponent } from './pontos/pontos.component';
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'pontos', component: PontosComponent },
   { path: 'teste', component: TesteComponent },
   { path: 'maleta', component: MaletaComponent },
+  { path: 'cabo', component: CaboComponent },
   { path: 'seletor', component: SeletorComponent },
   {path: '', pathMatch: 'full', redirectTo: 'maleta' }
 ];
