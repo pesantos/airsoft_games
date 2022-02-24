@@ -1,4 +1,47 @@
-<app-timer></app-timer>
+<div style="text-align: center;width: 98vw;">
+    <div *ngIf="game && game.iniciado">
+        <div class="ponto">
+            {{game.pontos[game.pontoAtual].descricao}}
+            <div *ngIf="game.acionado">
+                <div [class]="game.acionado" style="display: inline-block;border-radius: 50%;width: 50px;height: 50px;">
+                    
+                </div>
+                <div style="display: inline-block;top: -13px;position: relative;">
+                    {{aser.tempoString(getPonto().tempoRestante)}}
+                </div>
+            </div>
+        </div>
+        <div style="text-align: center;margin-top: 5px;">
+            <div class="Vermelho" style="display: inline-block;border-radius: 50%;width: 60px;height: 60px;">
+                    <div style="position: relative;
+                    top: 14px;
+                    font-size: 22px;
+                    font-family: 'Roboto';">{{game.placarVermelho}}</div>
+                    <div style="font-family: 'Roboto';
+                    position: relative;
+                    top: 10px;
+                    font-size: 13px;">Pts</div>
+            </div>
+            <div class="Azul" style="display: inline-block;border-radius: 50%;width: 60px;height: 60px;margin-left: 19px;">
+                <div style="position: relative;
+                top: 14px;
+                font-size: 22px;
+                font-family: 'Roboto';">{{game.placarAzul}}</div>
+                <div style="font-family: 'Roboto';
+                position: relative;
+                top: 10px;
+                font-size: 13px;">Pts</div>
+            </div>
+        </div>
+        <div class="botao" style="background-color: #c4c5af;;color: white;margin-top: 25px;"  (click)="acao()">
+            Armar Explosivo
+        </div>
+    </div>
+    
+    <app-timer (finalizar)="startar($event)" *ngIf="game.mostrarTimer"></app-timer>
+</div>
+
+
 <app-painel-de-senha [visivel]="campoSenha" (emissor)="recebeuModificador($event)"></app-painel-de-senha>
 
 
@@ -8,9 +51,7 @@
         <button pButton pRipple type="button" label="LIMPAR" [ngStyle]="{'width':'100%'}" (click)="limpar()" class="p-button-raised p-button-danger"></button>
     </div>
 
-    <div class="aninhado" style="width: 270px;margin-top: 20px;">
-        <button pButton pRipple type="button" label="Zerar Placar" [ngStyle]="{'width':'100%'}" (click)="placar()" class="p-button-raised p-button-success"></button>
-    </div>
+    
     <div class="aninhado" style="width: 270px;margin-top: 20px;">
         <button pButton pRipple type="button" label="CANCELAR" [ngStyle]="{'width':'100%'}" (click)="cancelar()" class="p-button-raised p-button-info"></button>
     </div>

@@ -1,0 +1,38 @@
+.Azul{
+    background-color: #200ab1;
+    color:white;
+    font-weight: bolder;
+}
+
+.Vermelho{
+    background-color: rgb(155, 37, 37);
+    color:white;
+    font-weight: bolder;
+}
+
+.ponto{
+    font-size: 3em;
+    font-family: 'Roboto';
+    background-color: black;
+    color: white;
+    padding: 32px;
+}
+
+.botao{
+    border-radius: 13px;
+margin: 4px;
+padding: 5px;
+font-family: 'Roboto';
+font-size: 3em;
+text-shadow: 4px 4px 3px black;
+cursor: pointer;
+
+-webkit-touch-callout: none;
+   -webkit-user-select: none;
+   -khtml-user-select: none;
+   -moz-user-select: none;
+   -ms-user-select: none;
+   user-select: none;
+
+
+}
