@@ -1,0 +1,213 @@
+<div *ngIf="!game.iniciado" style="width: 90vw;text-align: center;font-family: 'Roboto';">
+    Versão 1.4 <br>
+    <button *ngIf="!game.iniciado" type="button" class="botao"  (click)="iniciar()" >Iniciar Jogo</button>
+</div>
+
+<div *ngIf="game.pontosExplodidos.length" style="text-align: center;background-color: white;border-radius: 15px;border-style: solid;">
+    <div style="font-family: 'Roboto';">Pontos Explodidos</div>
+    <div style="overflow-x: scroll;
+    overflow-y: hidden;
+    height: 64px;
+    white-space: nowrap;">
+            <div  *ngFor="let vic of game.pontosExplodidos" [class]="vic.cor" style="display: inline-block;
+            border-radius: 17%;
+            box-shadow: 2px 2px 2px black;
+            padding: 6px;
+            margin: 6px;
+            font-size: 13px;
+            line-height: 0.8;
+            font-weight: 500;
+            font-style: normal;"><div>⚡</div><div>{{vic.ponto}}</div></div>
+    </div>
+    
+</div>
+
+
+
+
+<p-dialog header="Configuração de Jogo" [(visible)]="dialogo">
+    
+
+    <div class="aninhado">
+        <h5>Tempo de detonação: {{game.minutosBomba}} minuto(s)</h5>
+        <p-slider [(ngModel)]="game.minutosBomba" [min]="1" [max]="59"></p-slider>
+    </div>
+
+    <div class="aninhado">
+        <h5>Numero de Times: {{game.numeroTimes}}</h5>
+        <p-slider [(ngModel)]="game.numeroTimes" [min]="2" [max]="8"></p-slider>
+    </div>
+
+    <div class="aninhado" style="text-align: center;">
+        <h5>Horário de Término</h5>
+       <input type="time" [(ngModel)]="game.termino" style="font-size: 1.6rem;
+       font-family: 'Roboto';
+       border-radius: 9px;
+       width: 118px;
+       display: inline-block;">
+    </div>
+    
+
+    <div class="aninhado" style="width: 270px;margin-top: 20px;">
+        <button pButton pRipple type="button" label="Iniciar" [ngStyle]="{'width':'100%'}" (click)="configurar()" class="p-button-raised p-button-success"></button>
+    </div>
+    
+</p-dialog>
+
+
+<div *ngIf="game.iniciado " style="width: 98vw;height: 85vh;text-align: center;">
+    <div id="btStatus" style="display: inline-block;width: 300px;border-style: solid;border-radius: 13px;margin-bottom: 36px;padding: 15px;font-family: 'Roboto';
+    outline-style: solid;outline-offset: 3px;margin-top: 14px;">
+        <div>
+            ESTADO DO EXPLOSIVO 
+        </div>
+        <div>
+            {{game.estadoBomba}}
+        </div>
+
+        <div style="font-size: 1.5rem;
+        text-shadow: 0px 4px 2px rgb(95, 93, 93);">
+            👉{{game.pontoAcionado}}👈
+        </div>
+        
+        
+    </div>
+
+    <div *ngIf="game.estadoBomba=='armado'" style="border-style: solid;
+    border-width: 1px;
+    width: 97%;
+    border-radius: 10px;
+    padding: 13px;
+    font-size: 1.6rem;
+    font-weight: 900;
+    font-family: 'Roboto';
+    margin-top: -28px;
+    box-shadow: 3px 3px 3px #969696;
+    line-height: 1;
+    letter-spacing: 0.076em;
+    font-style: normal;">
+        ⏰{{game.timerString}}
+    </div>
+
+    <div *ngIf="game.estadoBomba=='transporte'" style="font-family: 'Roboto';
+    font-size: 1.3rem;
+    font-weight: 100;
+    line-height: 0.6;
+    letter-spacing: -0.036em;">
+        🔉{{tocando.split('/')[1]}}
+    </div>
+    <hr>
+    <div *ngFor="let tim of game.osTimes" style="display: inline-block;width: 300px;padding: 10px;font-family: 'Roboto';border-radius: 9px;margin: 2px 0px 15px 0px;
+    box-shadow: 1px 9px 6px #b3adad;text-shadow: 2px 2px black;text-transform: capitalize;cursor: pointer;
+    font-size: 3rem;-webkit-touch-callout: none;-webkit-user-select: none;-khtml-user-select: none;-moz-user-select: none;  -ms-user-select: none;user-select: none;" [class]="tim" (click)="acao(tim)">
+        <div>
+            {{tim}}
+        </div>
+        <div style="font-size: 1.2rem;" *ngIf="game.estadoBomba=='transporte' && game.acionado==tim">Transportando</div>
+        <div style="font-size: 1.2rem;" *ngIf="game.estadoBomba=='armado' && game.acionado==tim">Armado</div>
+    </div>
+
+    <div *ngIf="game.iniciado && game.localidades.length" style="text-align: center;">
+        <div (click)="abrirModificador()" style="display: inline-block;
+        font-size: 1.9rem;
+        font-family: 'Roboto';
+        cursor: pointer;
+        box-shadow: 0px 5px 3px gray;
+        padding: 12px;
+        border-radius: 14px;
+        text-shadow: 2px 2px 1px #a99595;
+        background-color: #eaeaea;
+        margin: 2px;">
+            ☠️
+            Modificador
+        </div>
+    </div>
+
+    
+</div>
+
+<div *ngIf="game.fim" style="display: inline-block;
+width: 100%;
+text-align: center;
+font-family: 'Roboto';
+font-size: 2.563rem;
+box-shadow: 0px 16px 14px gray;
+border-radius: 16px;
+padding: 16px;
+font-weight: 100;">
+    <div>
+        Fim de Jogo
+    </div>
+    <div>
+        🤠
+    </div>
+    <button style="width: 100%;
+    border-radius: 14px;
+    font-size: 1.7rem;
+    line-height: 1.5;
+    font-weight: 800;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;" (click)="iniciar()" >Iniciar Novo Jogo</button>
+</div>
+
+<div style="width: 98vw;text-align: center;">
+    <div (click)="abrirHistorico()" style="display: inline-block;
+    font-size: 1.9rem;
+    font-family: 'Roboto';
+    cursor: pointer;
+    box-shadow: 0px 5px 3px gray;
+    padding: 12px;
+    border-radius: 14px;
+    text-shadow: 2px 2px 1px #a99595;
+    background-color: #eaeaea;
+    width: 245px;
+margin-top: 15px;"> 
+        Histórico
+        
+    </div>
+</div>
+
+
+
+<p-dialog header="Restaurar Jogo" [(visible)]="restore">
+    Deseja restaurar o jogo que estava em andamento?
+    <div class="aninhado" style="width: 270px;margin-top: 20px;">
+        <button pButton pRipple type="button" label="LIMPAR" [ngStyle]="{'width':'100%'}" (click)="limpar()" class="p-button-raised p-button-danger"></button>
+    </div>
+    <div class="aninhado" style="width: 270px;margin-top: 20px;">
+        <button pButton pRipple type="button" label="CANCELAR" [ngStyle]="{'width':'100%'}" (click)="cancelar()" class="p-button-raised p-button-info"></button>
+    </div>
+    <div class="aninhado" style="width: 270px;margin-top: 20px;">
+        <button pButton pRipple type="button" label="RESTAURAR" [ngStyle]="{'width':'100%'}" (click)="restaurar()" class="p-button-raised p-button-success"></button>
+    </div>
+</p-dialog>
+
+
+<app-painel-de-senha [visivel]="campoSenha" (emissor)="recebeuModificador($event)"></app-painel-de-senha>
+
+<p-sidebar [(visible)]="historicoVisivel" [baseZIndex]="10000">
+    <h3>Histórico</h3>
+    <div *ngIf="game && game.logs.length" style="height: 80vh;overflow-y: scroll;overflow-x: hidden;">
+        <div *ngFor="let log of game.logs" class={{log.cor?log.cor:null}} style="padding: 3px;margin: 4px;border-radius: 9px;box-shadow: 0px 2px 3px #757070;">
+            <div style="display: inline-block;width: 20%;
+            font-family: 'Roboto';
+            text-align: center;
+            border-style: solid;
+            border-radius: 4px;
+            border-width: 2px;">
+                <div>{{log.id}}</div>
+                <div>{{doisDigitos(log.hora)}}:{{doisDigitos(log.minutos)}}</div>
+            </div>
+            <div style="display: inline-block;
+            width: 75%;
+            text-align: center;
+            font-family: 'Roboto';
+            font-size: 0.8rem;
+            padding: 3px;">
+                {{log.texto}}
+            </div>
+            
+        </div>
+    </div>
+</p-sidebar>

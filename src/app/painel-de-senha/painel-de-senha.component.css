@@ -1,0 +1,14 @@
+.tecla{
+    border-style: solid;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 3.7rem;
+    font-family: 'Roboto';
+    width: 75px;
+    height: 74px;
+    line-height: 1.4;
+    text-shadow: 1px 2px #a2a2a2;
+    cursor: pointer;
+    display: inline-block;
+    margin: 3px;
+}

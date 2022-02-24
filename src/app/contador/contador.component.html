@@ -1,0 +1,117 @@
+
+<!-- <input type="button" value="Falar" (click)="falar()">
+<input type="button" value="Falar NOvo" (click)="falarNovo()">
+<input type="button" value="Contagem Regressiva" (click)="contagem()"> -->
+<div style="height: 60px;padding: 5px">
+  <span style="color:blue">{{azul}}: <b> {{azulCarga}}/{{azulCargaMax}} Pontos de Carga</b></span><br>
+  <span style="color:red"> {{vermelho}}: <b>{{vermelhoCarga}}/{{vermelhoCargaMax}} Pontos de Carga</b></span>
+
+</div>
+
+<img src="assets/lock.png" *ngIf="jogoIniciado" style="position: absolute;left:10px;top: 70px;width: 40px;height: 40px;cursor: pointer;" (click)="lock()" alt="lock">
+<div *ngIf="locked" style="width: 98%;height: 60vw;text-align: center;">
+    <h2>Dispositivo Travado </h2>
+    <img src="assets/lock.png" style="width: 90px;height: 90px;" alt="">
+</div>
+
+<div *ngIf="fim" style="width: 98%;height: 60vw;text-align: center;">
+    <h2>{{textoFinal}} </h2>
+    <img src="assets/trofeu.jpg" style="width:100px" alt=""> <br>
+    <button pButton pRipple type="button" label="Iniciar Novo Jogo" [ngStyle]="{'width':'100%'}" (click)="iniciarJogo()" class="p-button-raised p-button-success"></button>
+</div>
+<div  style="width: 98%; height: 60vh;background-color: rgb(51, 51, 51); text-align: center;padding: 40px;" *ngIf="!locked && !fim">
+    <div style="width: 100%;text-align: center;color:white">Versão:1.3</div>
+    <div *ngIf="!jogoIniciado" style="height:130px;margin-top:10px">
+        <button type="button" class="botao"  (click)="iniciarJogo()" >Iniciar Jogo</button>
+    </div>
+    <div *ngIf="(atual=='neutro' || atual=='vermelhoTransportando' || atual=='vermelhoEnriquecendo' || azulReady) && atual!='azulTransportando'" style="height:130px;margin-top:10px">
+        <button class="botao azul" type="button"   (click)="azulAcionado()" *ngIf="jogoIniciado && !movAzul">Transportar <br/> {{azul}}</button>
+    </div>
+
+    <div *ngIf="atual=='azulTransportando' && !azulReady" style="height:130px;margin-top:10px">
+        <button class="botao azul" type="button"  (click)="eAzul()" >Enriquecer OGIVA <br/> {{azul}}</button>
+    </div>
+
+    <div *ngIf="azulReady && atual=='azulTransportando' && !azulEstaArmado" style="height:130px;margin-top:10px">
+        <button class="botao azul" type="button"  (click)="armarAzul()" >ARMAR OGIVA <br/> {{azul}}</button>
+    </div>
+    
+    <div *ngIf="(atual=='neutro' || atual=='azulTransportando' || atual=='azulEnriquecendo' || vermelhoReady) && atual!='vermelhoTransportando'" style="height:130px;margin-top:10px">
+        <button class="botao vermelho" type="button"  (click)="vermelhoAcionado()" >Transportar <br/> {{vermelho}}</button>
+    </div>
+
+    <div *ngIf="atual=='vermelhoTransportando'  && !vermelhoReady" style="height:130px;margin-top:10px">
+        <button class="botao vermelho" type="button"  (click)="eVermelho()" >Enriquecer OGIVA <br/> {{vermelho}}</button>
+    </div>
+
+    
+
+    
+
+    <div *ngIf="vermelhoReady && atual=='vermelhoTransportando' && !vermelhoEstaArmado" style="height:130px">
+        <button class="botao vermelho" type="button"  (click)="armarVermelho()" >ARMAR OGIVA <br/> {{vermelho}}</button>
+    </div>
+
+    <div *ngIf="azulEstaArmado" style="color:white;background-color: blue;border-radius: 12px;padding: 10px;margin-top: 20px;">
+        <h5>Medidor de Detonação</h5>
+        <p-progressBar [value]="timerAzul"></p-progressBar>
+    </div>
+
+    <div *ngIf="vermelhoEstaArmado" style="color:white;background-color: red;border-radius: 12px;padding: 10px;margin-top: 20px;">
+        <h5>Medidor de Detonação</h5>
+        <p-progressBar [value]="timerVermelho"></p-progressBar>
+    </div>
+    
+    
+</div>
+
+
+<p-dialog header="Configuração de Jogo" [(visible)]="dialogo">
+    <div class="aninhado">
+        <h5>Selecione a voz do dispositivo</h5>
+        <p-dropdown [options]="vozes" [(ngModel)]="gameConfig.voz" (onChange)="testarVoz()"></p-dropdown>
+        <img src="assets/som.png" style="width: 25px;height: 25px;cursor: pointer;" (click)="testarVoz()" alt="som">
+    </div>
+    <div  class="aninhado">
+        <h5>Grossura da Voz: {{gameConfig.pitch}}</h5>
+        <p-slider [(ngModel)]="gameConfig.pitch" [min]="0" [max]="2" [step]="0.1"></p-slider>
+    </div>
+    <div  class="aninhado">
+        <h5>Velocidade da Fala: {{gameConfig.rate}}</h5>
+        <p-slider [(ngModel)]="gameConfig.rate" [min]="0" [max]="10" [step]="0.1"></p-slider>
+    </div>
+    <div style="width: 270px;" class="aninhado">
+        <div class="p-field">
+            <label for="username1">Nome do Time Azul</label>
+            <input id="username1" type="username" aria-describedby="username1-help" pInputText [(ngModel)]="gameConfig.nomeAzul" />
+            
+        </div>
+    </div>
+
+    <div style="width: 270px;" class="aninhado">
+        <div class="p-field">
+            <label for="username1">Nome do Time Vermelho</label>
+            <input id="username1" type="username" aria-describedby="username1-help" pInputText [(ngModel)]="gameConfig.nomeVermelho" />
+            
+        </div>
+    </div>
+
+    <div class="aninhado">
+        <h5>Cargas da Bomba: {{gameConfig.cargas}}</h5>
+        <p-slider [(ngModel)]="gameConfig.cargas" [min]="1" [max]="1000"></p-slider>
+    </div>
+    <div class="aninhado">
+        <h5>Tempo de Loop (segundos): {{gameConfig.loop}}</h5>
+        <p-slider [(ngModel)]="gameConfig.loop" [min]="3" [max]="60"></p-slider>
+    </div>
+    <div class="aninhado">
+        <h5>Tempo detonação da bomba (Minutos): {{gameConfig.bomba}}</h5>
+        <p-slider [(ngModel)]="gameConfig.bomba" [min]="1" [max]="500"></p-slider>
+    </div>
+
+    <div class="aninhado" style="width: 270px;margin-top: 20px;">
+        <button pButton pRipple type="button" label="Iniciar Jogo" [ngStyle]="{'width':'100%'}" (click)="configurar()" class="p-button-raised p-button-success"></button>
+    </div>
+    
+</p-dialog>
+

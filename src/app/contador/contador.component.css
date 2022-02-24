@@ -1,0 +1,32 @@
+
+
+.botao{
+    width: 100%;
+    height: 100%;
+    
+    max-height: 250px;
+    max-width: 380px;
+    margin-bottom: 20px;
+    position: relative;
+    display: inline-block;
+    border-radius: 14px;
+    border-style: solid;
+    font-size: 30px;
+    font-family: 'Roboto';
+    font-weight: 'Bolder';
+    box-shadow: 4px 4px 5px black;
+}
+
+.vermelho{
+    background-color: red;
+    color:white;
+}
+
+.azul{
+    background-color: blue;
+    color:white;
+}
+
+.aninhado{
+    /* line-height: 0px; */
+}

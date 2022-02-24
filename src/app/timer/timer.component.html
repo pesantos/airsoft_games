@@ -1,0 +1,52 @@
+<div *ngIf="acionado" style="padding: 10px;
+margin: 14px;
+font-size: 40px;
+font-family: 'Roboto';
+font-weight: 900;
+color: red;
+text-shadow: 2px 2px 3px #363131;">
+    {{label}}
+</div>
+<div style="width: 98vw;text-align: center;" *ngIf="!acionado">
+    <div (click)="setar()" style="display: inline-block;
+    font-size: 1.9rem;
+    font-family: 'Roboto';
+    cursor: pointer;
+    box-shadow: 0px 5px 3px gray;
+    padding: 12px;
+    border-radius: 14px;
+    text-shadow: 2px 2px 1px #a99595;
+    background-color: #eaeaea;
+    width: 245px;
+margin-top: 15px;"> 
+
+  ⏱️ TIMER
+
+    </div>
+
+
+    <p-dialog header="TIMER" [(visible)]="dialogo">
+        <div class="field col-12 md:col-3">
+            <label for="vertical" style="display: block">Nº de Minutos</label>
+            <p-inputNumber [(ngModel)]="minutos" [showButtons]="true" buttonLayout="vertical" spinnerMode="vertical" inputId="vertical"
+            decrementButtonClass="p-button-secondary" incrementButtonClass="p-button-secondary" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus">
+            </p-inputNumber>
+        </div>
+        <div class="field col-12 md:col-3">
+            <div (click)="iniciarTimer()" style="display: inline-block;
+    font-size: 1.9rem;
+    font-family: 'Roboto';
+    cursor: pointer;
+    box-shadow: 0px 5px 3px gray;
+    padding: 12px;
+    border-radius: 14px;
+    text-shadow: 2px 2px 1px #a99595;
+    background-color: #eaeaea;
+    width: 245px;
+margin-top: 15px;"> 
+
+💀Armar
+
+    </div>
+        </div>
+    </p-dialog>

@@ -1,0 +1,71 @@
+<div *ngIf="!game.iniciado" style="width: 90vw;text-align: center;font-family: 'Roboto';">
+    Versão 1.1 <br>
+    <button *ngIf="!game.iniciado" type="button" class="botao"  (click)="iniciar()" >Iniciar Jogo</button>
+</div>
+
+<div *ngIf="game.geral.length" style="text-align: center;background-color: white;border-radius: 15px;border-style: solid;">
+    <div>Hall de Vitórias</div>
+    <div  *ngFor="let vic of game.geral" [class]="vic" style="display: inline-block;border-radius: 50%;box-shadow: 2px 2px 2px black;padding: 6px;
+    margin: 6px;">⚡</div>
+</div>
+
+
+    <div style="width: 90vw;height: 100vh;text-align: center;"  *ngIf="game.iniciado" id="tabuleiro">
+        <div style="display: inline-block;position: relative;width: 320px;" *ngIf="!game.fim">
+            <button type="button" class="botao azul"  (click)="acionar('azul')" >Acionar <br> Time Azul <hr> {{game.azul}} Pts.</button>
+            <button type="button" class="botao verde"  (click)="acionar('verde')" >Acionar <br> Time Verde <hr> {{game.verde}} Pts.</button>
+            <button *ngIf="game.times>2" type="button" class="botao vermelho"  (click)="acionar('vermelho')" >Acionar <br> Time Vermelho<hr> {{game.vermelho}} Pts.</button>
+            <button *ngIf="game.times>3" type="button" class="botao preto"  (click)="acionar('preto')" >Acionar <br> Time Preto<hr> {{game.preto}} Pts.</button>
+            <button *ngIf="game.times>4" type="button" class="botao amarelo"  (click)="acionar('amarelo')" >Acionar <br> Time Amarelo <hr> {{game.amarelo}} Pts.</button>
+            <button *ngIf="game.times>5" type="button" class="botao branco"  (click)="acionar('branco')" >Acionar <br> Time Branco <hr> {{game.branco}} Pts.</button>
+            <button *ngIf="game.times>6" type="button" class="botao cinza"  (click)="acionar('cinza')" >Acionar <br> Time Cinza<hr> {{game.cinza}} Pts.</button>
+            <button *ngIf="game.times>7" type="button" class="botao laranja"  (click)="acionar('laranja')" >Acionar <br> Time Laranja<hr> {{game.laranja}} Pts.</button>
+        </div>
+    
+        <div *ngIf="game.fim" style="font-family: 'Roboto';font-size: 15px; padding: 30px;">
+            {{game.acionado}} VENCEU!
+            <hr>
+            <div  *ngFor="let c of game.osTimes" [class]="c" style="padding: 3px;margin-bottom: 15px; border-radius: 13px; box-shadow: 2px 2px 2px black;"> {{c}}: {{game[c]}} pts </div>
+            
+            <!-- <button type="button" class="botao"  (click)="resetar()" >RESETAR.</button> -->
+            <button type="button" class="botao"  (click)="armarNovo()" >Armar Novo Ponto.</button>
+        </div>
+    </div>
+
+
+    
+    <p-dialog header="Restaurar Jogo" [(visible)]="restore">
+        Deseja restaurar o jogo que estava em andamento?
+        <div class="aninhado" style="width: 270px;margin-top: 20px;">
+            <button pButton pRipple type="button" label="LIMPAR" [ngStyle]="{'width':'100%'}" (click)="limpar()" class="p-button-raised p-button-danger"></button>
+        </div>
+        <div class="aninhado" style="width: 270px;margin-top: 20px;">
+            <button pButton pRipple type="button" label="CANCELAR" [ngStyle]="{'width':'100%'}" (click)="cancelar()" class="p-button-raised p-button-info"></button>
+        </div>
+        <div class="aninhado" style="width: 270px;margin-top: 20px;">
+            <button pButton pRipple type="button" label="RESTAURAR" [ngStyle]="{'width':'100%'}" (click)="restaurar()" class="p-button-raised p-button-success"></button>
+        </div>
+    </p-dialog>
+
+
+
+<p-dialog header="Configuração de Jogo" [(visible)]="dialogo">
+    
+
+    <div class="aninhado">
+        <h5>Pontos para detonação: {{game.meta}}</h5>
+        <p-slider [(ngModel)]="game.meta" [min]="3" [max]="1000"></p-slider>
+    </div>
+
+    <div class="aninhado">
+        <h5>Numero de Times: {{game.times}}</h5>
+        <p-slider [(ngModel)]="game.times" [min]="2" [max]="8"></p-slider>
+    </div>
+    
+
+    <div class="aninhado" style="width: 270px;margin-top: 20px;">
+        <button pButton pRipple type="button" label="Iniciar" [ngStyle]="{'width':'100%'}" (click)="configurar()" class="p-button-raised p-button-success"></button>
+    </div>
+    
+</p-dialog>
+

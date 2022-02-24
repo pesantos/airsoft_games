@@ -1,0 +1,42 @@
+<p-dialog header="Modificador" [(visible)]="dialogo">
+    <div style="font-size: 2.9rem;
+    text-align: center;
+    font-weight: 900;
+    text-shadow: 2px 4px 2px black;
+    background-color: #f70000;
+    color: white;
+    margin: 2px;
+    padding: 4px;
+    border-radius: 8px;">{{valor}}</div>
+    <div style="width: 300px;
+    border-style: solid;
+    border-radius: 15px;
+    text-align: center;
+    border-width: 1px;
+    padding: 8px;
+    box-shadow: 2px 6px 3px #5f5151;">
+
+    
+        <div class="tecla" (click)="tip('7')">7</div>
+        <div class="tecla" (click)="tip('8')">8</div>
+        <div class="tecla" (click)="tip('9')">9</div>
+        <div class="tecla" (click)="tip('4')">4</div>
+        <div class="tecla" (click)="tip('5')">5</div>
+        <div class="tecla" (click)="tip('6')">6</div>
+        <div class="tecla" (click)="tip('1')">1</div>
+        <div class="tecla" (click)="tip('2')">2</div>
+        <div class="tecla" (click)="tip('3')">3</div>
+    </div>
+
+    <div style="padding: 25px;
+    font-size: 2.8rem;
+    text-align: center;
+    font-weight: 900;
+    border-radius: 15px;
+    background-color: #f9f2f2;
+    margin-top: 13px;
+    box-shadow: 0px 8px 2px #806666;
+    cursor: pointer;" (click)="enviar()">
+        ENTRAR
+    </div>
+</p-dialog>

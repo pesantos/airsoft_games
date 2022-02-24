@@ -1,0 +1,15 @@
+.azul{
+    background-color: #200ab1;
+    color:white;
+    font-weight: bolder;
+}
+
+.vermelho{
+    background-color: rgb(94, 5, 5);
+    color:white;
+    font-weight: bolder;
+}
+
+.adesivo{
+    font-size: 28px;
+}

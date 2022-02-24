@@ -1,0 +1,178 @@
+<div *ngIf="!game.iniciado" style="width: 90vw;text-align: center;font-family: 'Roboto';">
+    Versão 1.8 Jogo da Maleta<br>
+    <button *ngIf="!game.iniciado" type="button" class="botao"  (click)="iniciar()" >Iniciar Jogo</button>
+</div>
+
+<app-painel-de-senha [visivel]="campoSenha" (emissor)="recebeuModificador($event)"></app-painel-de-senha>
+
+<div *ngIf="game && game.iniciado">
+    <div *ngIf="game && game.proprietario">
+        <div style="width: 98vw;
+        text-align: center;
+        font-size: 60px;font-family: 'roboto';">
+            <div style="font-size: 115px;
+            text-shadow: 10px 10px 7px #807979;">
+                {{game.proprietario.adesivo}}
+            </div>
+            
+            <div *ngIf="game && game.proprietario && game.proprietario.fuga && !this.game.fim" >
+                <button pButton (click)="abrirSenha()" pRipple type="button" label="Inserir Senha" class="p-button-raised p-button-secondary"></button>
+            </div>
+            <div style="font-size: 11vw;
+            text-shadow: 10px 10px 7px #807979;">
+                {{game.proprietario.nome}}
+                <div style="line-height: 5px;">
+                    <div *ngFor="let jj of game.proprietario.membros" style="display: inline-block;font-size: 0.3em;padding: 9px;">{{jj}}</div>
+                </div>
+            </div>
+            <div *ngIf="!this.game.fim" style="font-size: 115px;
+            text-shadow: 10px 10px 7px #807979;">
+                {{game.proprietario.timerLabel}}
+            </div>
+            <div *ngIf="this.game.fim" style="font-size: 115px;
+            text-shadow: 10px 10px 7px #807979;">
+                👑Vitória👑
+            </div>
+            <div *ngIf="!this.game.fim" style="border-radius: 14px;
+            background-color: red;
+            color: white;
+            cursor: pointer;" (click)="morri()">
+                Morri
+            </div>
+        </div>
+        
+    </div>
+    <div *ngIf="game && !game.proprietario">
+                <div  [class]="setarClasse(jog)" *ngFor="let jog of game.jogadores" (click)="acao(jog)" style="width: 97vw;display: block;text-align: center;margin-bottom: 9px;border-radius: 12px;
+            font-family: 'roboto';cursor: pointer;padding: 5px;color: white;text-shadow: 2px 2px 2px black;">
+                <div style="display: inline-block;font-size: 42px;top: -19px;position: relative;">
+                    {{jog.adesivo}}
+                </div>
+                <div style="display: inline-block;font-size: 31px;">
+                    <div>
+                        {{jog.nome}}
+                        <div style="line-height: 5px;">
+                            <div *ngFor="let jj of jog.membros" style="display: inline-block;font-size: 0.5em;padding: 9px;">{{jj}}</div>
+                        </div>
+                        
+                    </div>
+                    
+                    <div>
+                        {{jog.timerLabel}}
+                    </div>
+                </div>
+            </div>
+    </div>
+    
+</div>
+
+
+
+<p-dialog header="Configuração de Jogo" [(visible)]="dialogo">
+    <div class="aninhado">
+        <h5>Adicione os Jogadores</h5>
+        <input type="text" [(ngModel)]="nomeJogador" [ngStyle]="{'width':'150px'}" pInputText /> 
+        <div style="display: inline-block;">
+            <button pButton pRipple type="button" (click)="adicionarJogador()" icon="pi pi-plus" class="p-button-rounded p-button-success p-button-outlined"></button>
+        </div>
+        <div *ngIf="game && game.jogadores.length">
+            <div>Jogadores: {{game.jogadores.length}}</div>
+            <div *ngFor="let jog of game.jogadores">
+                {{jog.id}}-{{jog.nome}}
+            </div>
+        </div>
+        <div style="width: 100%;
+        text-align: center;
+        margin-top: 15px;">
+            <button pButton (click)="sortearTimes()" pRipple type="button" label="Sortear Times" class="p-button-raised p-button-secondary"></button>
+        </div>
+    </div>
+
+    <div class="aninhado">
+        <h5>Jogador Por Time: {{game.jogadorPorTime}} jogadores</h5>
+        <p-slider [(ngModel)]="game.jogadorPorTime" [min]="2" [max]="10"></p-slider>
+    </div>
+
+    <div class="aninhado">
+        <h5>Tempo de Fuga: {{game.minutosFuga}} minuto(s)</h5>
+        <p-slider [(ngModel)]="game.minutosFuga" [min]="1" [max]="120"></p-slider>
+    </div>
+
+    
+
+    
+    
+
+    <div class="aninhado" style="width: 270px;margin-top: 20px;">
+        <button pButton pRipple type="button" label="Iniciar" [ngStyle]="{'width':'100%'}" (click)="configurar()" class="p-button-raised p-button-success"></button>
+    </div>
+    
+</p-dialog>
+
+
+<p-dialog header="Restaurar Jogo" [(visible)]="restore">
+    Deseja restaurar o jogo que estava em andamento?
+    <div class="aninhado" style="width: 270px;margin-top: 20px;">
+        <button pButton pRipple type="button" label="LIMPAR" [ngStyle]="{'width':'100%'}" (click)="limpar()" class="p-button-raised p-button-danger"></button>
+    </div>
+
+    <div class="aninhado" style="width: 270px;margin-top: 20px;">
+        <button pButton pRipple type="button" label="Zerar Placar" [ngStyle]="{'width':'100%'}" (click)="placar()" class="p-button-raised p-button-success"></button>
+    </div>
+    <div class="aninhado" style="width: 270px;margin-top: 20px;">
+        <button pButton pRipple type="button" label="CANCELAR" [ngStyle]="{'width':'100%'}" (click)="cancelar()" class="p-button-raised p-button-info"></button>
+    </div>
+
+    
+
+    <div class="aninhado" style="width: 270px;margin-top: 20px;">
+        <button pButton pRipple type="button" label="RESTAURAR" [ngStyle]="{'width':'100%'}" (click)="restaurar()" class="p-button-raised p-button-success"></button>
+    </div>
+</p-dialog>
+
+<div style="width: 98vw;text-align: center;">
+    <div (click)="abrirHistorico()" style="display: inline-block;
+    font-size: 1.9rem;
+    font-family: 'Roboto';
+    cursor: pointer;
+    box-shadow: 0px 5px 3px gray;
+    padding: 12px;
+    border-radius: 14px;
+    text-shadow: 2px 2px 1px #a99595;
+    background-color: #eaeaea;
+    width: 245px;
+margin-top: 15px;"> 
+        Histórico
+        
+    </div>
+</div>
+<div style="text-align: center;width: 98vw;" *ngIf="!sumirTimer">
+    <app-timer (finalizar)="finalizouTimer($event)"></app-timer>
+</div>
+
+
+<p-sidebar [(visible)]="historicoVisivel" [baseZIndex]="10000">
+    <h3>Histórico</h3>
+    <div *ngIf="game && game.logs.length" style="height: 80vh;overflow-y: scroll;overflow-x: hidden;">
+        <div *ngFor="let log of game.logs" class={{log.cor?log.cor:null}} style="padding: 3px;margin: 4px;border-radius: 9px;box-shadow: 0px 2px 3px #757070;">
+            <div style="display: inline-block;width: 20%;
+            font-family: 'Roboto';
+            text-align: center;
+            border-style: solid;
+            border-radius: 4px;
+            border-width: 2px;">
+                <div>{{log.id}}</div>
+                <div>{{doisDigitos(log.hora)}}:{{doisDigitos(log.minutos)}}</div>
+            </div>
+            <div style="display: inline-block;
+            width: 75%;
+            text-align: center;
+            font-family: 'Roboto';
+            
+            padding: 3px;" [innerHTML]="log.texto">
+                
+            </div>
+            
+        </div>
+    </div>
+</p-sidebar>
