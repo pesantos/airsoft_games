@@ -40,10 +40,10 @@ export class CaboComponent implements OnInit {
     this.restore = false;
   }
 
-  async acao(time){
+  async acao(){
     if(this.game.fim)return;
     this.campoSenha = new Date();
-    console.log(time);
+    
   }
 
   recebeuModificador(sen){
