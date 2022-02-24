@@ -17,7 +17,7 @@ const routes: Routes = [
   { path: 'maleta', component: MaletaComponent },
   { path: 'cabo', component: CaboComponent },
   { path: 'seletor', component: SeletorComponent },
-  {path: '', pathMatch: 'full', redirectTo: 'maleta' }
+  {path: '', pathMatch: 'full', redirectTo: 'cabo' }
 ];
 
 @NgModule({

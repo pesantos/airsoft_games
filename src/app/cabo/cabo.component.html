@@ -1,1 +1,23 @@
-<p>cabo works!</p>
+<app-timer></app-timer>
+<app-painel-de-senha [visivel]="campoSenha" (emissor)="recebeuModificador($event)"></app-painel-de-senha>
+
+
+<p-dialog header="Restaurar Jogo" [(visible)]="restore">
+    Deseja restaurar o jogo que estava em andamento?
+    <div class="aninhado" style="width: 270px;margin-top: 20px;">
+        <button pButton pRipple type="button" label="LIMPAR" [ngStyle]="{'width':'100%'}" (click)="limpar()" class="p-button-raised p-button-danger"></button>
+    </div>
+
+    <div class="aninhado" style="width: 270px;margin-top: 20px;">
+        <button pButton pRipple type="button" label="Zerar Placar" [ngStyle]="{'width':'100%'}" (click)="placar()" class="p-button-raised p-button-success"></button>
+    </div>
+    <div class="aninhado" style="width: 270px;margin-top: 20px;">
+        <button pButton pRipple type="button" label="CANCELAR" [ngStyle]="{'width':'100%'}" (click)="cancelar()" class="p-button-raised p-button-info"></button>
+    </div>
+
+    
+
+    <div class="aninhado" style="width: 270px;margin-top: 20px;">
+        <button pButton pRipple type="button" label="RESTAURAR" [ngStyle]="{'width':'100%'}" (click)="restaurar()" class="p-button-raised p-button-success"></button>
+    </div>
+</p-dialog>
