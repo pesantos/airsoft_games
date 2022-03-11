@@ -19,7 +19,7 @@ describe('PainelDeSenhaComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create alguma coisa', () => {
     expect(component).toBeTruthy();
   });
 });

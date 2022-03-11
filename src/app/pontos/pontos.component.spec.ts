@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { PontosComponent } from './pontos.component';
 
 describe('PontosComponent', () => {
@@ -8,7 +8,8 @@ describe('PontosComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PontosComponent ]
+      declarations: [ PontosComponent ],
+      schemas: [ NO_ERRORS_SCHEMA ],
     })
     .compileComponents();
   }));
@@ -19,7 +20,7 @@ describe('PontosComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('Deveria criar o componente', () => {
     expect(component).toBeTruthy();
   });
 });
