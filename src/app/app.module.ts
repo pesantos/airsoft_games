@@ -25,6 +25,8 @@ import { PainelDeSenhaComponent } from './painel-de-senha/painel-de-senha.compon
 import { MaletaComponent } from './maleta/maleta.component';
 import { TimerComponent } from './timer/timer.component';
 import { CaboComponent } from './cabo/cabo.component';
+import { RegressivoComponent } from './regressivo/regressivo.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,7 +38,8 @@ import { CaboComponent } from './cabo/cabo.component';
     PainelDeSenhaComponent,
     MaletaComponent,
     TimerComponent,
-    CaboComponent
+    CaboComponent,
+    RegressivoComponent
   ],
   imports: [
     BrowserModule,

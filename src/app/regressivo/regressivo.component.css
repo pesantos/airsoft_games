@@ -1,0 +1,55 @@
+.Azul{
+    background-color: #796adb;
+    
+    font-weight: bolder;
+}
+
+.Vermelho{
+    background-color: rgb(224, 85, 85);
+    
+    font-weight: bolder;
+}
+
+.timer{
+    font-size: 72px;
+    font-family: 'Roboto';
+    font-weight: bolder;
+    padding: 44px;
+    text-shadow: 3px 3px white;
+}
+
+.botao{
+    font-family: 'Roboto';
+    font-size: 27px;
+    font-weight: 900;
+    border-radius: 15px;
+    padding: 13px;
+    text-transform: uppercase;
+    background-color: darkslateblue;
+    color: white;
+    box-shadow: 2px 2px black;
+}
+
+.waviy {
+    position: relative;
+    -webkit-box-reflect: below -20px linear-gradient(transparent, rgba(0,0,0,.2));
+    font-size: 1.3em;
+  }
+  .waviy span {
+    font-family: 'Alfa Slab One', cursive;
+    position: relative;
+    display: inline-block;
+    color: rgb(163, 25, 25);
+    text-transform: uppercase;
+    animation: waviy 1s infinite;
+    animation-delay: calc(.1s * var(--i));
+    
+  }
+  @keyframes waviy {
+    0%,40%,100% {
+      transform: translateY(0)
+    }
+    20% {
+      transform: translateY(-20px)
+    }
+  }

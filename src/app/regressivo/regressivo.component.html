@@ -1,0 +1,82 @@
+<div id="painel" style="width: 100vw;
+height: 100vh;
+
+margin: -8px;
+text-align: center;
+padding: 10px;">
+    <div *ngIf="!game || game.iniciado==false">
+        <button *ngIf="!game || !game.iniciado" type="button" class="botao"  (click)="iniciar()" >Iniciar Jogo</button>
+
+        <div style="padding: 18px;">
+            <div style="font-size: 22px;
+            font-family: 'Roboto';
+            text-transform: uppercase;
+            font-weight: bolder;
+            margin-bottom: 15px;">Tempo: {{tempo}} minutos</div>
+            <p-slider [(ngModel)]="tempo" [min]="10" [max]="240"></p-slider>
+        </div>
+    </div>
+
+    <div *ngIf="game && game.status=='desarmando'" style="font-size: 31px;
+    font-weight: 800;margin-top: 40vh;">  
+        <div class="waviy" style="text-shadow: 1px 1px black;">
+            <span style="--i:1">D</span>
+            <span style="--i:2">E</span>
+            <span style="--i:3">S</span>
+            <span style="--i:4">A</span>
+            <span style="--i:5">R</span>
+            <span style="--i:6">M</span>
+            <span style="--i:7">A</span>
+            <span style="--i:8">N</span>
+            <span style="--i:9">D</span>
+            <span style="--i:10">O</span>
+         
+           </div>
+    </div>
+
+    <div *ngIf="game && game.iniciado && !game.fim && game.status!=='desarmando'">
+        <button *ngIf="game && game.iniciado && !game.acionado" type="button" style="width: 100%;background-color: blue;margin-top: 40px;" class="botao"  (click)="acionar('Azul')" >Azul</button>
+        <br>
+        <button *ngIf="game && game.iniciado && !game.acionado" type="button" style="width: 100%;background-color: red;margin-top: 40px;" class="botao"  (click)="acionar('Vermelho')" >Vermelho</button>
+        <br>
+        <button *ngIf="game && game.iniciado && game.acionado" type="button" style="width: 100%;margin-top: 40px;" class="botao"  (click)="pausar()" >Pausar</button>
+        <div *ngIf="game && game.iniciado && game.acionado" class="timer">
+            {{game.tempoString}}
+        </div>
+    </div>
+
+    <div *ngIf="game && game.fim" style="font-size: 2em;
+    text-transform: uppercase;
+    font-family: 'Roboto';
+    background-color: gold;
+    padding: 12px;
+    border-radius: 15px;
+    box-shadow: 5px 5px black;
+    text-shadow: 1px 1px black;">
+        {{game.acionado}} VENCEU 🏆
+    </div>
+
+    
+
+</div>
+
+<p-dialog header="Restaurar Jogo" [(visible)]="restore">
+    Deseja restaurar o jogo que estava em andamento?
+    <div class="aninhado" style="width: 270px;margin-top: 20px;">
+        <button pButton pRipple type="button" label="LIMPAR" [ngStyle]="{'width':'100%'}" (click)="limpar()" class="p-button-raised p-button-danger"></button>
+    </div>
+
+    <div class="aninhado" style="width: 270px;margin-top: 20px;">
+        <button pButton pRipple type="button" label="Zerar Placar" [ngStyle]="{'width':'100%'}" (click)="placar()" class="p-button-raised p-button-success"></button>
+    </div>
+    <div class="aninhado" style="width: 270px;margin-top: 20px;">
+        <button pButton pRipple type="button" label="CANCELAR" [ngStyle]="{'width':'100%'}" (click)="cancelar()" class="p-button-raised p-button-info"></button>
+    </div>
+
+    
+
+    <div class="aninhado" style="width: 270px;margin-top: 20px;">
+        <button pButton pRipple type="button" label="RESTAURAR" [ngStyle]="{'width':'100%'}" (click)="restaurar()" class="p-button-raised p-button-success"></button>
+    </div>
+</p-dialog>
+
