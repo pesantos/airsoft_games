@@ -1,0 +1,129 @@
+
+
+<p-tabView>
+    
+    <p-tabPanel header="Jogo">
+        <div *ngIf="placarAzul && placarVermelho" style="text-align: center;">
+            <div class="placar" style="color: blue;font-size: 3rem;margin-top: -30px;">{{placarAzul['vivos']?placarAzul['vivos']:0}}</div><div class="placar">X</div><div class="placar" style="color: red;font-size: 3rem;margin-top: -30px;">{{placarVermelho['vivos']?placarVermelho['vivos']:0}}</div>
+        </div>
+        
+        <div style="text-align: center;">
+            <div class="botoes" (click)="modoVida()">
+                ❤️‍🔥
+            </div>
+            <div class="botoes" (click)="modoBomba()">
+                💣
+            </div>
+        </div>
+        <div class="principal">
+            <div *ngIf="game && game.modo">
+                <div *ngIf="game.modo=='vida'">
+                    Modo Vida ❤️‍🔥
+                </div>
+                <div *ngIf="game.modo=='bomba'">
+                    Modo Bomba 💣
+                </div>
+                <div *ngIf="mostrarPrincipal">
+                    <app-padrao (resposta)="processar($event)"></app-padrao>
+                </div>
+                
+            </div>
+            
+        </div>
+    </p-tabPanel>
+    <p-tabPanel header="Jogadores">
+        <div style="text-align: center;">
+            <div class="caixaInput">
+                <div>Nome do Operador</div>
+                <input type="text" [(ngModel)]="nomeJogador" [ngStyle]="{'width':'100%'}" pInputText />
+                <div class="subCaixa">
+                    <div>
+                        <div>Definição de Time</div>
+                        <div style="text-align: left;color: blue;">
+                            <p-radioButton name="cor" value="azul" [(ngModel)]="corSelecionada"></p-radioButton>
+                            Azul
+                        </div>
+                        <div style="text-align: left;color: red;">
+                            <p-radioButton name="cor" value="vermelho" [(ngModel)]="corSelecionada"></p-radioButton>
+                            Vermelho
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="caixaBotao">
+                        <button pButton pRipple type="button" (click)="adicionarJogador()" icon="pi pi-plus" class="p-button-rounded p-button-success p-button-outlined"></button>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center">
+                <div *ngIf="game">
+                    <div class="placar" style="color: blue;">{{game['azuis']?game.azuis.length:0}}</div><div class="placar">X</div><div class="placar" style="color: red;">{{game['vermelhos']?game.vermelhos.length:0}}</div>
+                </div>
+
+                <div *ngIf="game && game.azuis && game.azuis.length">
+                    <div style="display: inline-block;max-width: 300px;width: 100%;">
+                        <div *ngFor="let j of game.azuis" class="itemJogador" style="background-color: blue;color:white">{{j.nome}}
+                            <div class="itemj" (click)="definirSenha(j)">🗝️</div>
+                            <div  class="itemj">❌</div>
+                            <div *ngIf="j.senha" style="display: inline-block;">⭐</div>
+                        </div>
+                    </div>
+                   
+                </div>
+
+                <div *ngIf="game && game.vermelhos && game.vermelhos.length">
+                    <div style="display: inline-block;max-width: 300px;width: 100%;">
+                        <div *ngFor="let j of game.vermelhos" class="itemJogador" style="background-color: red;color:white">{{j.nome}}
+                            <div class="itemj" (click)="definirSenha(j)">🗝️</div>
+                            <div  class="itemj">❌</div>
+                            <div *ngIf="j.senha" style="display: inline-block;">⭐</div>
+                        </div>
+                    </div>
+                   
+                </div>
+            </div>
+            
+
+        </div>
+        
+    </p-tabPanel>
+
+    <p-tabPanel header="Gerais">
+
+    </p-tabPanel>
+    
+</p-tabView>
+
+<p-dialog header="Definição de Padrão" [(visible)]="senhaJogador">
+    <div class="labelJogador" *ngIf="jogadorSelecionado">
+        👮{{jogadorSelecionado.nome}}
+    </div>
+    <div class="avisoModal" *ngIf="s1">
+        Entre com o padrão novamente para confirmar
+    </div>
+    <div *ngIf="jaUsada" class="avisoModal" style="color:red">
+        Esta senha já foi usada
+    </div>
+    <div *ngIf="jogadorSelecionado">
+        <app-padrao (resposta)="setarSenhaJ($event)" [alvo]="'jogador'"></app-padrao>
+    </div>
+</p-dialog>
+
+<p-dialog header="Restaurar Jogo" [(visible)]="restore">
+    Deseja restaurar o jogo que estava em andamento?
+    <div class="aninhado" style="width: 270px;margin-top: 20px;">
+        <button pButton pRipple type="button" label="LIMPAR" [ngStyle]="{'width':'100%'}" (click)="limpar()" class="p-button-raised p-button-danger"></button>
+    </div>
+
+    
+    <div class="aninhado" style="width: 270px;margin-top: 20px;">
+        <button pButton pRipple type="button" label="CANCELAR" [ngStyle]="{'width':'100%'}" (click)="cancelar()" class="p-button-raised p-button-info"></button>
+    </div>
+
+    
+
+    <div class="aninhado" style="width: 270px;margin-top: 20px;">
+        <button pButton pRipple type="button" label="RESTAURAR" [ngStyle]="{'width':'100%'}" (click)="restaurar()" class="p-button-raised p-button-success"></button>
+    </div>
+</p-dialog>

@@ -1,3 +1,4 @@
+import { SixComponent } from './six/six.component';
 import { RegressivoComponent } from './regressivo/regressivo.component';
 import { CaboComponent } from './cabo/cabo.component';
 import { MaletaComponent } from './maleta/maleta.component';
@@ -17,6 +18,7 @@ const routes: Routes = [
   { path: 'regressivo', component: RegressivoComponent },
   { path: 'pontos', component: PontosComponent },
   { path: 'teste', component: TesteComponent },
+  { path: 'six', component: SixComponent },
   { path: 'maleta', component: MaletaComponent },
   { path: 'cabo', component: CaboComponent },
   { path: 'seletor', component: SeletorComponent },

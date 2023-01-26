@@ -26,6 +26,10 @@ import { MaletaComponent } from './maleta/maleta.component';
 import { TimerComponent } from './timer/timer.component';
 import { CaboComponent } from './cabo/cabo.component';
 import { RegressivoComponent } from './regressivo/regressivo.component';
+import { SixComponent } from './six/six.component';
+import {TabViewModule} from 'primeng/tabview';
+import {RadioButtonModule} from 'primeng/radiobutton';
+import { PadraoComponent } from './padrao/padrao.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +43,9 @@ import { RegressivoComponent } from './regressivo/regressivo.component';
     MaletaComponent,
     TimerComponent,
     CaboComponent,
-    RegressivoComponent
+    RegressivoComponent,
+    SixComponent,
+    PadraoComponent
   ],
   imports: [
     BrowserModule,
@@ -47,6 +53,8 @@ import { RegressivoComponent } from './regressivo/regressivo.component';
     DropdownModule,
     FormsModule,
     SidebarModule,
+    RadioButtonModule,
+    TabViewModule,
     InputNumberModule,
     ButtonModule,
     ProgressBarModule,
