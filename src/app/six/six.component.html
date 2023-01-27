@@ -3,33 +3,60 @@
 <p-tabView>
     
     <p-tabPanel header="Jogo">
-        <div *ngIf="placarAzul && placarVermelho" style="text-align: center;">
-            <div class="placar" style="color: blue;font-size: 3rem;margin-top: -30px;">{{placarAzul['vivos']?placarAzul['vivos']:0}}</div><div class="placar">X</div><div class="placar" style="color: red;font-size: 3rem;margin-top: -30px;">{{placarVermelho['vivos']?placarVermelho['vivos']:0}}</div>
-        </div>
-        
-        <div style="text-align: center;">
-            <div class="botoes" (click)="modoVida()">
-                ❤️‍🔥
-            </div>
-            <div class="botoes" (click)="modoBomba()">
-                💣
+
+        <div *ngIf="game && game.estado == 'terminado'">
+            <div class="confi black">
+                Jogo terminado
+                <div>❌</div>
             </div>
         </div>
-        <div class="principal">
-            <div *ngIf="game && game.modo">
-                <div *ngIf="game.modo=='vida'">
-                    Modo Vida ❤️‍🔥
+
+        <div *ngIf="game && game.estado == 'iniciado'">
+            <div *ngIf="placarAzul && placarVermelho" style="text-align: center;">
+                <div class="placar" style="color: blue;font-size: 3rem;margin-top: -30px;position: relative;">{{placarAzul['vivos']?placarAzul['vivos']:0}} </div><div class="placar">X</div><div class="placar" style="color: red;font-size: 3rem;margin-top: -30px;">{{placarVermelho['vivos']?placarVermelho['vivos']:0}}</div>
+            </div>
+            
+            <div style="text-align: center;">
+                <div class="botoes" (click)="modoVida()">
+                    ❤️‍🔥
                 </div>
-                <div *ngIf="game.modo=='bomba'">
-                    Modo Bomba 💣
+                <div *ngIf="game?.dominante == 'neutro'" class="botoes" (click)="modoBomba()">
+                    💣
                 </div>
-                <div *ngIf="mostrarPrincipal">
-                    <app-padrao (resposta)="processar($event)"></app-padrao>
+                <div *ngIf="game?.dominante == 'vermelho'" class="botoes" style="background-color: red;" (click)="modoBomba()">
+                    💣
+                </div>
+                <div *ngIf="game?.dominante == 'azul'" class="botoes" style="background-color: blue;" (click)="modoBomba()">
+                    💣
+                </div>
+            </div>
+            <div class="principal">
+                <div class="mostraTempo" >
+                    <div class="placar" style="color: blue;font-size: 3rem;">{{tempoAzul?tempoAzul:'--:--'}}</div><div class="placar">X</div><div class="placar" style="color: red;font-size: 3rem;">{{tempoVermelho?tempoVermelho:'--:--'}}</div>
+                </div>
+                <div *ngIf="game && game.modo">
+                    <div *ngIf="game.modo=='vida'">
+                        Modo Vida ❤️‍🔥
+                    </div>
+                    <div *ngIf="game.modo=='bomba'">
+                        Modo Bomba 💣
+                    </div>
+                    
+    
+                    <div *ngIf="mostrarPrincipal">
+                        <app-padrao (resposta)="processar($event)"></app-padrao>
+                    </div>
+                    <div *ngIf="aviso">
+                        <div class="avisoM">
+                            <div>{{iconeAviso}}</div>
+                            <div>{{textoAviso}}</div>
+                        </div>
+                    </div>
                 </div>
                 
             </div>
-            
         </div>
+       
     </p-tabPanel>
     <p-tabPanel header="Jogadores">
         <div style="text-align: center;">
@@ -65,7 +92,7 @@
                     <div style="display: inline-block;max-width: 300px;width: 100%;">
                         <div *ngFor="let j of game.azuis" class="itemJogador" style="background-color: blue;color:white">{{j.nome}}
                             <div class="itemj" (click)="definirSenha(j)">🗝️</div>
-                            <div  class="itemj">❌</div>
+                            <div  class="itemj" (click)="excluir(j)">❌</div>
                             <div *ngIf="j.senha" style="display: inline-block;">⭐</div>
                         </div>
                     </div>
@@ -76,7 +103,7 @@
                     <div style="display: inline-block;max-width: 300px;width: 100%;">
                         <div *ngFor="let j of game.vermelhos" class="itemJogador" style="background-color: red;color:white">{{j.nome}}
                             <div class="itemj" (click)="definirSenha(j)">🗝️</div>
-                            <div  class="itemj">❌</div>
+                            <div  class="itemj" (click)="excluir(j)">❌</div>
                             <div *ngIf="j.senha" style="display: inline-block;">⭐</div>
                         </div>
                     </div>
@@ -90,6 +117,29 @@
     </p-tabPanel>
 
     <p-tabPanel header="Gerais">
+        <div class="confi">
+            Placar Geral
+            <div>
+                <span style="color:red">{{game?game.pontosGeral.vermelho:0}}</span> X <span style="color:blue">{{game?game.pontosGeral.azul:0}}</span>
+            </div>
+        </div>
+        <div class="confi">
+            Status da partida <span style="color: blue;">{{game?game.estado:'parado'}}</span>
+        </div>
+        <div class="confi">
+            <div>Tempo em Minutos ({{tempoEmMinutos}})</div>
+            <p-slider [(ngModel)]="tempoEmMinutos" [min]="1" [max]="50"></p-slider>
+        </div>
+
+        <div class="confi">
+            <div>Vidas Por Jogador ({{vidasPorJogador}})</div>
+            <p-slider [(ngModel)]="vidasPorJogador" [min]="0" [max]="10"></p-slider>
+        </div>
+
+        <div class="confi" style="text-align: center;">
+            <button pButton pRipple type="button" label="Iniciar Partida" class="p-button-secondary" (click)="iniciarPartida()"></button>
+        </div>
+        
 
     </p-tabPanel>
     
@@ -127,3 +177,5 @@
         <button pButton pRipple type="button" label="RESTAURAR" [ngStyle]="{'width':'100%'}" (click)="restaurar()" class="p-button-raised p-button-success"></button>
     </div>
 </p-dialog>
+
+<p-confirmDialog header="Exclusão de Operador" icon="pi pi-exclamation-triangle"></p-confirmDialog>

@@ -30,6 +30,8 @@ import { SixComponent } from './six/six.component';
 import {TabViewModule} from 'primeng/tabview';
 import {RadioButtonModule} from 'primeng/radiobutton';
 import { PadraoComponent } from './padrao/padrao.component';
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import {ConfirmationService} from 'primeng/api';
 
 @NgModule({
   declarations: [
@@ -56,6 +58,7 @@ import { PadraoComponent } from './padrao/padrao.component';
     RadioButtonModule,
     TabViewModule,
     InputNumberModule,
+    ConfirmDialogModule,
     ButtonModule,
     ProgressBarModule,
     RippleModule,
@@ -67,7 +70,7 @@ import { PadraoComponent } from './padrao/padrao.component';
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   schemas: [ NO_ERRORS_SCHEMA ],
-  providers: [PrimeNGConfig],
+  providers: [PrimeNGConfig,ConfirmationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

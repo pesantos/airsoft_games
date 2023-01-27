@@ -1,3 +1,4 @@
+import { ConfirmationService } from 'primeng/api';
 import { Component, OnInit } from '@angular/core';
 import PatternLock from '@phenax/pattern-lock-js';
 @Component({
@@ -7,7 +8,7 @@ import PatternLock from '@phenax/pattern-lock-js';
 })
 export class SixComponent implements OnInit {
 
-  constructor() { }
+  constructor(private confirmationService:ConfirmationService) { }
 
   ngOnInit() {
     this.iniciar();
@@ -18,6 +19,7 @@ export class SixComponent implements OnInit {
   }
 
   game:any;
+  falas:any = [];
   irra = new Audio('assets/irra.wav');
   gold = new Audio('assets/gold.mp3');
   money = new Audio('assets/here.mp3');
@@ -33,6 +35,32 @@ export class SixComponent implements OnInit {
   mostrarPrincipal: boolean = false;
   placarAzul:any;
   placarVermelho:any;
+  tempoAzul:any;
+  tempoVermelho:any;
+
+  tempoEmMinutos: number = 15;
+  vidasPorJogador: number = 3;
+
+  aviso:any = null;
+  textoAviso:any;
+  iconeAviso:any;
+  avisoTimer:any;
+  avisar(i,t){
+    this.apagarAviso();
+    this.textoAviso = t;
+    this.iconeAviso = i;
+    this.aviso = true;
+    this.avisoTimer = setTimeout(()=>{
+      this.apagarAviso();
+    },3000);
+  }
+
+  apagarAviso(){
+    clearTimeout(this.avisoTimer);
+    this.aviso = false;
+    this.textoAviso = null;
+    this.iconeAviso = null;
+  }
 
   computarPlacar(){
     this.placarAzul = {vivos:0,vidas:0};
@@ -49,6 +77,9 @@ export class SixComponent implements OnInit {
         }
       });
     }
+    this.tempoAzul =  this.getTempoLabelg(this.game.tempoAzul);
+    this.tempoVermelho = this.getTempoLabelg(this.game.tempoVermelho);
+
   }
 
   setarSenhaJ(sen){
@@ -82,22 +113,104 @@ export class SixComponent implements OnInit {
     }
   }
 
+  pontape:any;
+  iniciarPartida(){
+    this.falas = [];
+    this.game.tempoAzul = this.tempoEmMinutos*60*1000;
+    this.game.tempoVermelho = this.tempoEmMinutos*60*1000;
+    this.game.dominante = 'neutro';
+    this.game.jogadores.forEach(j=>{
+      j.vidas = this.vidasPorJogador;
+      j.vivo = true;
+    });
+    this.game.estado = 'iniciado';
+    this.salvarOffline();
+    clearTimeout(this.pontape);
+    clearTimeout(this.game.g);
+    this.pontape = setTimeout(()=>{
+      this.dizer('Jogo Iniciado');
+      this.loop()
+    },this.game.tempoLoop);
+  }
+
   novoJogo(){
     this.game = {
       //propriedades aqui
+      vitorias:[],
+      pontosGeral:{vermelho:0,azul:0},
+      estado:'parado',
       jogadores:null,
       vermelhos:null,
       azuis:null,
+      tempoAzul:15*1000*60,
+      tempoVermelho:15*1000*60,
+      dominante:'neutro',
       mapaJogadores:null,
       mapaSenha:null,
       modo:null,
       ultimoId:0,
-      vidas:2
+      vidas:2,
+      tempoLoop:15000,
+      g:null
     };
+  }
+
+  processarPerdaDeVida(j){
+    this.mostrarPrincipal = false;
+    if(!j.vivo){
+      this.falas.push(`${j.nome} você já está eliminado, aguarde a próxima rodada`);
+      this.avisar('💀','eliminado');
+      this.falar();
+      return;
+    }
+      if(j.vidas>0){
+        j.vidas--;
+        this.falas.push(`Operador ${j.nome} morreu, dirija-se para o respáu`);
+        this.avisar('💀',`${j.nome} vá para o respawn`);
+      }else if(j.vidas==0){
+        this.falas.push(`Operador ${j.nome} eliminado, aguarde a próxima rodada`);
+        j.vivo = false;//morre o cara
+        this.avisar('💀',`${j.nome} eliminado`);
+        this.checarVidas('azul');
+        this.checarVidas('vermelho');
+      }
+      this.computarPlacar();
+      this.falar();
+    
+  }
+
+  processarBomba(j){
+    if(!this.game || !(this.game.estado=='iniciado')){
+      return;
+    }
+    if(j.vidas<1){
+
+      this.mostrarPrincipal = false;
+      return;
+    }
+    this.game.dominante = j.time;
+    this.falas.push(`${j.nome} do Time ${j.time} ativou o explosivo`);
+    this.mostrarPrincipal = false;
+    this.avisar('💣',`Bomba Ativada (${j.time})`);
+    
+    this.computarPlacar();
+    this.falar();
   }
 
   processar(senha){
     console.log(`Senha ${senha}`);
+    if(!this.game || this.game.estado!='iniciado')return;
+    
+    let j = this.game.mapaSenha[senha];
+    if(j){
+      if(this.game.modo=='vida'){
+        this.processarPerdaDeVida(j);
+      }else{
+        this.processarBomba(j);
+      }
+      this.salvarOffline();
+    }
+    console.log(this.falas,this.game);
   }
 
   mapear(){
@@ -160,12 +273,14 @@ export class SixComponent implements OnInit {
  
 
   modoVida(){
+    this.apagarAviso();
     if(!this.game)return;
     this.game.modo = 'vida';
     this.mostrarPrincipal = true;
     this.acionarApagar();
   }
   modoBomba(){
+    this.apagarAviso();
     if(!this.game)return;
     this.game.modo = 'bomba';
     this.mostrarPrincipal = true;
@@ -188,6 +303,17 @@ export class SixComponent implements OnInit {
       audio.play()
       audio.onended = res
     })
+  }
+
+  excluir(j){
+    this.confirmationService.confirm({
+      message: `Tem certeza que deseja excluir o ${j.nome}?`,
+      accept: () => {
+          this.game.jogadores = this.game.jogadores.filter(jj=>jj.id!=j.id);
+          this.mapear();
+          this.salvarOffline();
+      }
+  });
   }
 
   getTempoLabelg(t){
@@ -254,7 +380,12 @@ export class SixComponent implements OnInit {
       
       this.game = JSON.parse(d);
       this.mapear();
-      this.loop();
+      if(this.game.estado=='iniciado'){
+        this.game.g = setTimeout(()=>{
+          this.dizer('Jogo restaurado');
+          this.loop()},this.game.tempoLoop);
+      }
+      
       
     }
     this.restore = false;
@@ -262,12 +393,87 @@ export class SixComponent implements OnInit {
     
   }
 
+  async vencer(cor,tipo){
+    this.game.estado = 'terminado';
+    this.game.vitorias.push({cor,tipo});
+    if(tipo=='matar')this.game.pontosGeral[cor]+=2;
+    if(tipo=='tempo')this.game.pontosGeral[cor]+=1;
+    this.salvarOffline();
+    this.falas.push(`Vitória do time ${cor}`);
+    this.falas.push(`Vitória do time ${cor}`);
+
+    while(this.falas.length){
+      await this.falar();
+    }
+  }
+
+  checarVidas(time){
+    let vivos = true;
+    let r = time=='azul'?this.game.vermelhos:this.game.azuis;
+    r.forEach(j=>{
+      if(!j.vivo)vivos = false;
+    });
+
+    if(!vivos){
+      this.falas.push(`Vitória do time ${time} por eliminação completa do time inimigo`);
+      this.vencer(time,'matar');
+    }
+
+  }
+
+  rodarLogica(){
+    console.log("lógica ",this.game);
+    if(this.game.dominante){
+      console.log("tem dominante")
+      if(this.game.dominante=='vermelho'){
+        this.game.tempoVermelho-=15000;
+      }
+      if(this.game.dominante=='azul'){
+        this.game.tempoAzul-=15000;
+      }
+    }
+
+    this.computarPlacar();
+
+    if(this.game.tempoVermelho<=0){
+      this.game.tempoVermelho = 0;
+      //time vermelho ganha
+      this.falas.push(`Vitória do time vermelho por detonação do explosivo`);
+      this.vencer('vermelho','tempo');
+      
+    }
+
+    if(this.game.tempoAzul<=0){
+      this.game.tempoAzul = 0;
+      //time azul ganha
+      this.falas.push(`Vitória do time azul por detonação do explosivo`);
+      this.vencer('azul','tempo');
+    }
+
+    
+
+
+
+    this.checarVidas('azul');
+    this.checarVidas('vermelho');
+    
+  }
+
+  async falar(){
+    let f = this.falas.shift();
+    if(f) await this.dizer(f);
+  }
+
   async loop(){
 
     if(this.game){
       console.log("Rodando loop");
-      
-
+      if(this.game && this.game.estado=='iniciado'){
+        this.rodarLogica();
+        this.computarPlacar();
+        this.falar();
+      }
+      clearTimeout(this.game.g);
       this.game.g = setTimeout(()=>{this.loop()},this.game.tempoLoop);
     }
   }
