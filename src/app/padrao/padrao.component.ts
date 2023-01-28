@@ -25,7 +25,7 @@ export class PadraoComponent implements OnInit {
       this.objeto = PatternLock({
         $canvas: document.getElementById(this.alvo),
         width: 300,
-        height: 430,
+        height: 350,
         grid: [ 4, 4 ],
       });
       this.objeto.setTheme('light');

@@ -23,6 +23,7 @@ export class SixComponent implements OnInit {
   irra = new Audio('assets/irra.wav');
   gold = new Audio('assets/gold.mp3');
   money = new Audio('assets/here.mp3');
+  explosao = new Audio('assets/expo.wav');
 
 
   nomeJogador:any;
@@ -40,6 +41,8 @@ export class SixComponent implements OnInit {
 
   tempoEmMinutos: number = 15;
   vidasPorJogador: number = 3;
+
+  cogumelo = new Audio('assets/cogumelo.wav');
 
   aviso:any = null;
   textoAviso:any;
@@ -112,9 +115,10 @@ export class SixComponent implements OnInit {
       
     }
   }
-
+  configurando = false;
   pontape:any;
   iniciarPartida(){
+    this.configurando = true;
     this.falas = [];
     this.game.tempoAzul = this.tempoEmMinutos*60*1000;
     this.game.tempoVermelho = this.tempoEmMinutos*60*1000;
@@ -165,7 +169,7 @@ export class SixComponent implements OnInit {
     }
       if(j.vidas>0){
         j.vidas--;
-        this.falas.push(`Operador ${j.nome} morreu, dirija-se para o respáu`);
+        this.falas.push(`Operador ${j.nome} morreu, dirija-se para area de nascimento`);
         this.avisar('💀',`${j.nome} vá para o respawn`);
       }else if(j.vidas==0){
         this.falas.push(`Operador ${j.nome} eliminado, aguarde a próxima rodada`);
@@ -399,6 +403,7 @@ export class SixComponent implements OnInit {
     if(tipo=='matar')this.game.pontosGeral[cor]+=2;
     if(tipo=='tempo')this.game.pontosGeral[cor]+=1;
     this.salvarOffline();
+    if(tipo=='tempo')await this.playAudio(this.explosao);
     this.falas.push(`Vitória do time ${cor}`);
     this.falas.push(`Vitória do time ${cor}`);
 
@@ -408,13 +413,13 @@ export class SixComponent implements OnInit {
   }
 
   checarVidas(time){
-    let vivos = true;
+    let mortos = true;
     let r = time=='azul'?this.game.vermelhos:this.game.azuis;
     r.forEach(j=>{
-      if(!j.vivo)vivos = false;
+      if(j.vivo)mortos = false;
     });
 
-    if(!vivos){
+    if(mortos){
       this.falas.push(`Vitória do time ${time} por eliminação completa do time inimigo`);
       this.vencer(time,'matar');
     }
@@ -438,7 +443,9 @@ export class SixComponent implements OnInit {
     if(this.game.tempoVermelho<=0){
       this.game.tempoVermelho = 0;
       //time vermelho ganha
+      this.falas.push('*');
       this.falas.push(`Vitória do time vermelho por detonação do explosivo`);
+      
       this.vencer('vermelho','tempo');
       
     }
@@ -446,6 +453,7 @@ export class SixComponent implements OnInit {
     if(this.game.tempoAzul<=0){
       this.game.tempoAzul = 0;
       //time azul ganha
+      this.falas.push('*');
       this.falas.push(`Vitória do time azul por detonação do explosivo`);
       this.vencer('azul','tempo');
     }
@@ -459,19 +467,42 @@ export class SixComponent implements OnInit {
     
   }
 
-  async falar(){
-    let f = this.falas.shift();
-    if(f) await this.dizer(f);
+  async falar(vezes=1){
+    while(vezes){
+      let f = this.falas.shift();
+      if(f=='*')await this.playAudio(this.explosao);
+      if(f!='*' && f) await this.dizer(f);
+      vezes--;
+    }
+    
+  }
+
+  gerarFalaPlacar(){
+    if(this.game.estado!='iniciado')return;
+    let r = ``;
+    r+=`${this.placarAzul.vivos}  azul contra ${this.placarVermelho.vivos} vermelho`;
+    this.falas.push(r);
+  }
+
+  gerarFalaTempo(){
+    if(this.game.estado!='iniciado')return;
+    if(this.game.dominante!='neutro'){
+      
+      if(this.game.dominante=='azul') this.falas.push(`${this.calcularTempo(this.game.tempoAzul)} para o time azul detonar o explosivo`);
+      if(this.game.dominante=='vermelho') this.falas.push(`${this.calcularTempo(this.game.tempoVermelho)} para o time vermelho detonar o explosivo`);
+    }
   }
 
   async loop(){
-
+    this.configurando = false;
     if(this.game){
       console.log("Rodando loop");
       if(this.game && this.game.estado=='iniciado'){
         this.rodarLogica();
         this.computarPlacar();
-        this.falar();
+        this.gerarFalaPlacar();
+        this.gerarFalaTempo();
+        this.falar(3);
       }
       clearTimeout(this.game.g);
       this.game.g = setTimeout(()=>{this.loop()},this.game.tempoLoop);
