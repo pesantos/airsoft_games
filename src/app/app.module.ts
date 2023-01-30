@@ -32,6 +32,7 @@ import {RadioButtonModule} from 'primeng/radiobutton';
 import { PadraoComponent } from './padrao/padrao.component';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {ConfirmationService} from 'primeng/api';
+import {CheckboxModule} from 'primeng/checkbox';
 
 @NgModule({
   declarations: [
@@ -57,6 +58,7 @@ import {ConfirmationService} from 'primeng/api';
     SidebarModule,
     RadioButtonModule,
     TabViewModule,
+    CheckboxModule,
     InputNumberModule,
     ConfirmDialogModule,
     ButtonModule,

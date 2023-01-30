@@ -149,6 +149,10 @@
             <p-slider [(ngModel)]="vidasPorJogador" [min]="0" [max]="10"></p-slider>
         </div>
 
+        <div class="confi">
+            <p-checkbox [(ngModel)]="balancear" binary="true" inputId="binary"></p-checkbox> Balancear Times
+        </div>
+
         <div class="confi" style="text-align: center;">
             <button pButton pRipple type="button" label="Iniciar Partida" class="p-button-secondary" (click)="iniciarPartida()"></button>
         </div>

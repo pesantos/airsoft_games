@@ -1,6 +1,5 @@
 import { ConfirmationService } from 'primeng/api';
 import { Component, OnInit } from '@angular/core';
-import PatternLock from '@phenax/pattern-lock-js';
 @Component({
   selector: 'app-six',
   templateUrl: './six.component.html',
@@ -24,7 +23,7 @@ export class SixComponent implements OnInit {
   gold = new Audio('assets/gold.mp3');
   money = new Audio('assets/here.mp3');
   explosao = new Audio('assets/expo.wav');
-
+  balancear: boolean = true;
 
   nomeJogador:any;
   corSelecionada:any;
@@ -117,7 +116,55 @@ export class SixComponent implements OnInit {
   }
   configurando = false;
   pontape:any;
+
+  processarBalanceamento(){ // adiciona vidas adicionais para o time de forma aleatória
+    if(this.balancear){
+      let ta = this.game.azuis.length;
+      let tv = this.game.vermelhos.length;
+      if(ta!=tv){
+        if(ta<tv){
+          let d = tv-ta;
+          d = d*this.vidasPorJogador;
+          while(d>0){
+            let o = this.obterItemRandom(this.game.azuis);
+            o.vidas++;
+            d--;
+          }
+        }else{
+          let d = ta-tv;
+          d = d*this.vidasPorJogador;
+          while(d>0){
+            let o = this.obterItemRandom(this.game.vermelhos);
+            o.vidas++;
+            d--;
+          }
+        }
+      }
+    }
+  }
+
+  senhasValidas(){
+    let r = true;
+    this.game.jogadores.forEach(j=>{
+      if(!j.senha)r = false;
+    });
+    if(!r)this.game.estado = 'configure as senhas';
+    return r;
+  }
+
+  jogadoresValidos(){
+    if(!this.game.jogadores){
+      this.game.estado = 'sem jogadores';
+      return false;
+    }
+    return true;
+  }
+
   iniciarPartida(){
+    
+    if(!this.jogadoresValidos())return;
+    if(!this.senhasValidas())return;
+    this.mapear();
     this.configurando = true;
     this.falas = [];
     this.game.tempoAzul = this.tempoEmMinutos*60*1000;
@@ -127,10 +174,12 @@ export class SixComponent implements OnInit {
       j.vidas = this.vidasPorJogador;
       j.vivo = true;
     });
+    this.processarBalanceamento();//depois de setar as vidas de cada um
     this.game.estado = 'iniciado';
     this.salvarOffline();
     clearTimeout(this.pontape);
     clearTimeout(this.game.g);
+    this.dizer(`O jogo iniciará em 15 segundos`);
     this.pontape = setTimeout(()=>{
       this.dizer('Jogo Iniciado');
       this.loop()
@@ -184,11 +233,8 @@ export class SixComponent implements OnInit {
   }
 
   processarBomba(j){
-    if(!this.game || !(this.game.estado=='iniciado')){
-      return;
-    }
-    if(j.vidas<1){
-
+    if(!this.game || !(this.game.estado=='iniciado'))return;
+    if(!j.vivo){
       this.mostrarPrincipal = false;
       return;
     }
@@ -196,7 +242,6 @@ export class SixComponent implements OnInit {
     this.falas.push(`${j.nome} do Time ${j.time} ativou o explosivo`);
     this.mostrarPrincipal = false;
     this.avisar('💣',`Bomba Ativada (${j.time})`);
-    
     this.computarPlacar();
     this.falar();
   }
@@ -298,6 +343,10 @@ export class SixComponent implements OnInit {
       console.log("SLEEP");
       this.game.modo = null;
     },10000);
+  }
+
+  obterItemRandom(li){
+    return li[Math.floor(Math.random() * li.length)];
   }
 
   apagarPrincipal:any;
@@ -429,7 +478,6 @@ export class SixComponent implements OnInit {
   rodarLogica(){
     console.log("lógica ",this.game);
     if(this.game.dominante){
-      console.log("tem dominante")
       if(this.game.dominante=='vermelho'){
         this.game.tempoVermelho-=15000;
       }
