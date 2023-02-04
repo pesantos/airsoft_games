@@ -1,5 +1,4 @@
 
-
 <p-tabView>
     
     <p-tabPanel header="Jogo">
@@ -13,7 +12,7 @@
 
         <div *ngIf="game && game.estado == 'iniciado'">
             <div *ngIf="placarAzul && placarVermelho" style="text-align: center;">
-                <div class="placar" style="color: blue;font-size: 2.5rem;margin-top: -30px;position: relative;">{{placarAzul['vivos']?placarAzul['vivos']:0}} </div><div class="placar">X</div><div class="placar" style="color: red;font-size: 2.5rem;margin-top: -30px;">{{placarVermelho['vivos']?placarVermelho['vivos']:0}}</div>
+                <div class="placar" style="color: blue;font-size: 2.5rem;margin-top: -30px;position: relative;">{{placarAzul['vivos']?placarAzul['vivos']:0}} </div><div class="placar"><img src="assets/versus.png" alt="vs" style="width: 30px;margin-left: 4px;margin-right: 4px;"></div><div class="placar" style="color: red;font-size: 2.5rem;margin-top: -30px;">{{placarVermelho['vivos']?placarVermelho['vivos']:0}}</div>
             </div>
             
             <div style="text-align: center;">
@@ -34,8 +33,8 @@
                 Jogo começará em breve...
             </div>
             <div class="principal">
-                <div class="mostraTempo" >
-                    <div class="placar" style="color: blue;font-size: 2rem;">{{tempoAzul?tempoAzul:'--:--'}}</div><div class="placar">X</div><div class="placar" style="color: red;font-size: 2rem;">{{tempoVermelho?tempoVermelho:'--:--'}}</div>
+                <div class="mostraTempo" style="position: relative;left: 5px;">
+                    <div class="placar" style="color: blue;font-size: 2rem;margin-left: 5px;">{{tempoAzul?tempoAzul:'--:--'}}</div><div class="placar"><img src="assets/versus.png" alt="vs" style="width: 30px;margin-left: 4px;margin-right: 4px;"></div><div class="placar" style="color: red;font-size: 2rem;margin-right: 5px;">{{tempoVermelho?tempoVermelho:'--:--'}}</div>
                 </div>
                 <div *ngIf="game && game.modo">
                     <div *ngIf="game.modo=='vida'">

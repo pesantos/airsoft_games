@@ -37,6 +37,7 @@ export class SixComponent implements OnInit {
   placarVermelho:any;
   tempoAzul:any;
   tempoVermelho:any;
+  musicas = ['assets/beebop.mp3','assets/Beethoven9Synphony.mp3','assets/All-Along-The-WatchTower.mp3','assets/overture.mp3','assets/Bob-Dylan-The-Times-They-Are-A-Changin.mp3','assets/valquiria.mp3','assets/whiplash.mp3','assets/sold.mp3','assets/creedance.mp3'];
 
   tempoEmMinutos: number = 15;
   vidasPorJogador: number = 3;
@@ -82,6 +83,17 @@ export class SixComponent implements OnInit {
     this.tempoAzul =  this.getTempoLabelg(this.game.tempoAzul);
     this.tempoVermelho = this.getTempoLabelg(this.game.tempoVermelho);
 
+  }
+
+  musicaAtual:any;
+  volume: number = 0.70;
+  tocarMusica(){
+    if(this.musicaAtual)this.musicaAtual.pause();
+    this.musicaAtual = new Audio(this.obterItemRandom(this.musicas));
+    
+    this.musicaAtual.loop = true;
+    this.musicaAtual.volume = this.volume;
+    this.musicaAtual.play();
   }
 
   setarSenhaJ(sen){
@@ -160,7 +172,8 @@ export class SixComponent implements OnInit {
     return true;
   }
 
-  iniciarPartida(){
+
+   iniciarPartida(){
     
     if(!this.jogadoresValidos())return;
     if(!this.senhasValidas())return;
@@ -181,7 +194,11 @@ export class SixComponent implements OnInit {
     clearTimeout(this.game.g);
     this.dizer(`O jogo iniciará em 15 segundos`);
     this.pontape = setTimeout(()=>{
-      this.dizer('Jogo Iniciado');
+      this.dizer('Jogo Iniciado').then(r=>{
+        this.playAudio(this.irra);
+        this.aumentarMusica();
+        this.tocarMusica();
+      });
       this.loop()
     },this.game.tempoLoop);
   }
@@ -230,6 +247,7 @@ export class SixComponent implements OnInit {
       this.computarPlacar();
       this.falar();
     
+      this.salvarOffline();
   }
 
   processarBomba(j){
@@ -340,6 +358,7 @@ export class SixComponent implements OnInit {
     clearTimeout(this.apagarPrincipal);
     this.apagarPrincipal = setTimeout(()=>{
       this.mostrarPrincipal = false;
+      this.game.modo ='neutro';
       console.log("SLEEP");
       this.game.modo = null;
     },10000);
@@ -433,7 +452,10 @@ export class SixComponent implements OnInit {
       
       this.game = JSON.parse(d);
       this.mapear();
+
+      
       if(this.game.estado=='iniciado'){
+        this.tocarMusica();
         this.game.g = setTimeout(()=>{
           this.dizer('Jogo restaurado');
           this.loop()},this.game.tempoLoop);
@@ -446,7 +468,12 @@ export class SixComponent implements OnInit {
     
   }
 
+  pararMusica(){
+    if(this.musicaAtual)this.musicaAtual.pause();
+  }
+
   async vencer(cor,tipo){
+    this.pararMusica();
     this.game.estado = 'terminado';
     this.game.vitorias.push({cor,tipo});
     if(tipo=='matar')this.game.pontosGeral[cor]+=2;
@@ -522,6 +549,7 @@ export class SixComponent implements OnInit {
       if(f!='*' && f) await this.dizer(f);
       vezes--;
     }
+    this.aumentarMusica();
     
   }
 
@@ -557,13 +585,20 @@ export class SixComponent implements OnInit {
     }
   }
 
+  abaixarMusica(){
+    if(this.musicaAtual)this.musicaAtual.volume = 0.1;
+  }
+
+  aumentarMusica(){
+    if(this.musicaAtual)this.musicaAtual.volume = this.volume;
+  }
 
   async dizer(texto:any){
-    // if(this.musicaAtual)this.musicaAtual.volume = 0.1;
+   this.abaixarMusica();
     let speech = new SpeechSynthesisUtterance();
     // speech.lang = this.gameConfig.voz.lang;
     speech.text = texto+'';
-    speech.pitch = 0.6;
+    speech.pitch = 0.7;
     speech.rate = 1.4;
     speech.volume = 1;
     // speech.voice = this.gameConfig.voz;
