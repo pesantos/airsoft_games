@@ -144,7 +144,7 @@ export class MaletaComponent implements OnInit {
 
   async morri(){
     if(this.musicaAtual)this.musicaAtual.pause();
-    let jog = this.game.proprietario;
+    const jog = this.game.proprietario;
     this.salvarLog('vermelho',`<span class="adesivo">${jog.adesivo}</span>${jog.nome} MORREU (${jog.timerLabel})`,false);
     for(let i = 0; i<this.game.jogadores.length;i++){
       let at = this.game.jogadores[i];
@@ -156,8 +156,6 @@ export class MaletaComponent implements OnInit {
     this.salvarOffline();
     await this.playAudio(this.morte);
     this.tocarMusica();
-    
-
   }
 
   async acao(jogador){
@@ -171,9 +169,7 @@ export class MaletaComponent implements OnInit {
   }
 
   doisDigitos(v){
-    let res = '';
-    
-    res = v+'';
+    let res = v+'';
     if(res.length==1)res='0'+v;
     return res;
   }

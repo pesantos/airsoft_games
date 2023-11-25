@@ -3,8 +3,12 @@
 <head>
   <meta charset="utf-8">
   <title>Ogiva BlackFox</title>
-  <base href="/ogiva/">
-  <!-- <base href="/"> -->
+  <!-- <base href="/ogiva/"> -->
+  <base href="/">
+  <script type="text/javascript">
+    this.document.getElementsByTagName('base')[0]
+        .setAttribute('href', window.location.pathname);
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="manifest" href="manifest.webmanifest">
