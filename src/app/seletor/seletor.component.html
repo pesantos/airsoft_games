@@ -1,18 +1,13 @@
-<div style="width: 95vw;text-align: center;">
-    <div *ngFor="let jog of jogos" style="display: inline-block;
-    width: 300px;
-    font-family: 'Roboto';
-    font-size: 1.9rem;
-    padding: 17px;
-    background-image: url('assets/colina.png');
-    background-size: cover;
-    text-shadow: 2px 2px 2px white;
-    margin: 10px;
-    border-radius: 12px;
-    box-shadow: 0px 4px 4px gray;
-    cursor: pointer;
-    height: 155px;">
-
-        {{jog.titulo}}
+<div class="grid">
+    <div *ngFor="let jog of jogos" class="caixa sombra-2" (click)="clicar(jog.link)">
+        <div class="titulo">
+            {{jog.titulo}}
+        </div>
+        <div>
+            <i [class]="'pi '+jog.icone" style="font-size: 2rem"></i>
+        </div>
+        <div class="explicacao">
+            {{jog.explicacao}}
+        </div>
     </div>
 </div>

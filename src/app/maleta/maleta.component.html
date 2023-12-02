@@ -1,11 +1,14 @@
 <div *ngIf="!game.iniciado" style="width: 90vw;text-align: center;font-family: 'Roboto';">
-    Versão 1.8 Jogo da Maleta<br>
+    Versão 1.9 Jogo da Maleta<br>
     <button *ngIf="!game.iniciado" type="button" class="botao"  (click)="iniciar()" >Iniciar Jogo</button>
 </div>
 
 <app-painel-de-senha [visivel]="campoSenha" (emissor)="recebeuModificador($event)"></app-painel-de-senha>
 
 <div *ngIf="game && game.iniciado">
+    <div *ngIf="loopando">
+        🔛
+    </div>
     <div *ngIf="game && game.proprietario">
         <div style="width: 98vw;
         text-align: center;

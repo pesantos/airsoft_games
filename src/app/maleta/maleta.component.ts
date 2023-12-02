@@ -82,6 +82,9 @@ export class MaletaComponent implements OnInit {
     this.game.idLog++;
   }
 
+
+  oloop:any;
+
   async placar(){
     let d = localStorage.getItem(this.flagSave);
     if(d){
@@ -100,6 +103,7 @@ export class MaletaComponent implements OnInit {
       this.game = n;
       
       this.loop();
+      // this.oloop = setInterval(,this.game.)
     }
     this.restore = false;
   }
@@ -159,6 +163,8 @@ export class MaletaComponent implements OnInit {
   }
 
   async acao(jogador){
+    if(!this.temporizador)this.loop();
+
     if(this.musicaAtual)this.musicaAtual.pause();
     this.game.proprietario = jogador;
     this.salvarLog('azul',`<span class="adesivo">${this.game.proprietario.adesivo}</span> ${this.game.proprietario.nome} PEGOU A MALETA (${this.game.proprietario.timerLabel})`,false);
@@ -234,10 +240,16 @@ export class MaletaComponent implements OnInit {
 
     if(this.game.iniciado){
       this.salvarOffline();
-      this.temporizador = setTimeout(()=>{this.loop();},this.game.tempoLoop);
+      if(!this.temporizador){
+        clearInterval(this.temporizador);
+        this.temporizador = setInterval(()=>{this.loop();},this.game.tempoLoop);
+      }
+      this.loopando = !this.loopando;
     }
     
   }
+
+  loopando:boolean = false;
 
   nomeTimes = ['Alpha','Bravo','Charlie','Delta','Echo','FoxTrot','Golf','Hotel','India','Juliett','Kilo','Lima'];
   campoSenha = null;
@@ -259,6 +271,7 @@ export class MaletaComponent implements OnInit {
 
   async recebeuModificador(ev){
     if(ev=='43381'){
+      clearInterval(this.temporizador);
       if(this.musicaAtual)this.musicaAtual.pause();
       this.game.fim = true;
      
