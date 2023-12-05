@@ -2,11 +2,21 @@
 <p-tabView>
     
     <p-tabPanel header="Jogo">
-        
+        <div *ngIf="game && game.estado=='iniciando'" class="iniciando">
+            O jogo está iniciando...
+        </div>
         <div *ngIf="game && game.estado == 'terminado'">
             <div class="confi black">
                 Jogo terminado
                 <div>❌</div>
+                <div *ngIf="game.vitorias && game.vitorias.length">
+                    <div *ngIf="game.vitorias[game.vitorias.length-1].cor=='vermelho'" style="color: red;" class="fundo-vermelho">
+                        Vitória Time Vermelho
+                    </div>
+                    <div *ngIf="game.vitorias[game.vitorias.length-1].cor=='azul'" style="color: blue;" class="fundo-azul">
+                        Vitória Time Azul
+                    </div>
+                </div>
             </div>
         </div>
 

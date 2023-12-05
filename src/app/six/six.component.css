@@ -33,6 +33,14 @@
     gap: 3px;
 }
 
+.iniciando{
+    font-weight: 300;
+    font-size: 22px;
+    text-align: center;
+    position: relative;
+    top: 44px;
+}
+
 .numero-vidas{
     font-weight: 700;
 }
@@ -160,8 +168,6 @@
     border-radius: 5px;
     margin-top: 13px;
     text-transform: uppercase;
-    background-color: green;
-    color: white;
     box-shadow: 0px 4px 5px gray;
 }
 

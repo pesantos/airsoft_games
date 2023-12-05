@@ -1,5 +1,6 @@
 import { ConfirmationService } from 'primeng/api';
 import { Component, OnInit } from '@angular/core';
+import { AudioService } from '../audio.service';
 @Component({
   selector: 'app-six',
   templateUrl: './six.component.html',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SixComponent implements OnInit {
 
-  constructor(private confirmationService:ConfirmationService) { }
+  constructor(private confirmationService:ConfirmationService, private au:AudioService) { }
 
   ngOnInit() {
     this.iniciar();
@@ -16,6 +17,7 @@ export class SixComponent implements OnInit {
       this.restore = true;
     }
   }
+
 
   game:any;
   falas:any = [];
@@ -38,7 +40,8 @@ export class SixComponent implements OnInit {
   tempoAzul:any;
   tempoVermelho:any;
   musicas = ['assets/beebop.mp3','assets/Beethoven9Synphony.mp3','assets/All-Along-The-WatchTower.mp3','assets/overture.mp3','assets/Bob-Dylan-The-Times-They-Are-A-Changin.mp3','assets/valquiria.mp3','assets/whiplash.mp3','assets/sold.mp3','assets/creedance.mp3'];
-
+  musicaAzul = new Audio('assets/creedance.mp3');
+  musicaVermelha = new Audio('assets/whiplash.mp3');
   tempoEmMinutos: number = 15;
   vidasPorJogador: number = 3;
 
@@ -89,8 +92,13 @@ export class SixComponent implements OnInit {
   volume: number = 0.70;
   tocarMusica(){
     if(this.musicaAtual)this.musicaAtual.pause();
-    this.musicaAtual = new Audio(this.obterItemRandom(this.musicas));
-    
+    if(this.game['dominante']=='vermelho'){
+      this.musicaAtual = this.musicaVermelha;
+    }
+    if(this.game['dominante']=='azul'){
+      this.musicaAtual = this.musicaAzul;
+    }
+    if(!this.musicaAtual)return;
     this.musicaAtual.loop = true;
     this.musicaAtual.volume = this.volume;
     this.musicaAtual.play();
@@ -174,9 +182,10 @@ export class SixComponent implements OnInit {
 
 
    iniciarPartida(){
-    
+    this.game.estado = 'iniciando';
     if(!this.jogadoresValidos())return;
     if(!this.senhasValidas())return;
+    this.pararMusica();
     this.mapear();
     this.configurando = true;
     this.falas = [];
@@ -188,7 +197,7 @@ export class SixComponent implements OnInit {
       j.vivo = true;
     });
     this.processarBalanceamento();//depois de setar as vidas de cada um
-    this.game.estado = 'iniciado';
+    
     this.salvarOffline();
     clearTimeout(this.pontape);
     clearTimeout(this.game.g);
@@ -197,12 +206,14 @@ export class SixComponent implements OnInit {
       this.dizer('Jogo Iniciado').then(async r=>{
         await this.pontapeInicial();
       });
-      this.loop()
+      this.loop();
     },this.game.tempoLoop);
   }
 
   async pontapeInicial(){
         await this.playAudio(this.irra);
+        this.game.estado = 'iniciado';
+        this.computarPlacar();
         this.aumentarMusica();
         this.tocarMusica();
   }
@@ -229,7 +240,7 @@ export class SixComponent implements OnInit {
     };
   }
 
-  processarPerdaDeVida(j){
+  async processarPerdaDeVida(j){
     this.mostrarPrincipal = false;
     if(!j.vivo){
       this.falas = [];
@@ -239,11 +250,17 @@ export class SixComponent implements OnInit {
       return;
     }
       if(j.vidas>0){
+        this.abaixarMusica();
+        await this.au.tocarMorte();
+        this.aumentarMusica();
         j.vidas--;
         this.falas = [];
         this.falas.push(`Operador ${j.nome} morreu, dirija-se para area de nascimento`);
         this.avisar('💀',`${j.nome} vá para o respawn`);
       }else if(j.vidas==0){
+        this.abaixarMusica();
+        await this.au.tocarBerroMorte();
+        this.aumentarMusica();
         this.falas = [];
         this.falas.push(`Operador ${j.nome} eliminado, aguarde a próxima rodada`);
         j.vivo = false;//morre o cara
@@ -257,7 +274,9 @@ export class SixComponent implements OnInit {
       this.salvarOffline();
   }
 
-  processarBomba(j){
+  async processarBomba(j){
+    this.pararMusica();
+    await this.au.tocarPlanted();
     if(!this.game || !(this.game.estado=='iniciado'))return;
     if(!j.vivo){
       this.mostrarPrincipal = false;
@@ -268,7 +287,8 @@ export class SixComponent implements OnInit {
     this.mostrarPrincipal = false;
     this.avisar('💣',`Bomba Ativada (${j.time})`);
     this.computarPlacar();
-    this.falar();
+    await this.falar();
+    this.tocarMusica();
   }
 
   processar(senha){
@@ -347,6 +367,7 @@ export class SixComponent implements OnInit {
  
 
   modoVida(){
+    if(this.game.estado!=='iniciado')return;
     this.apagarAviso();
     if(!this.game)return;
     this.game.modo = 'vida';
@@ -354,6 +375,7 @@ export class SixComponent implements OnInit {
     this.acionarApagar();
   }
   modoBomba(){
+    if(this.game.estado!=='iniciado')return;
     this.apagarAviso();
     if(!this.game)return;
     this.game.modo = 'bomba';
@@ -456,10 +478,10 @@ export class SixComponent implements OnInit {
   async restaurar(){
     let d = localStorage.getItem(this.flagSave);
     if(d){
-      
+      this.dizer('Iniciando processo de restauração do jogo');
       this.game = JSON.parse(d);
       this.mapear();
-
+      this.pararMusica();
       
       if(this.game.estado=='iniciado'){
         this.tocarMusica();
@@ -594,7 +616,7 @@ export class SixComponent implements OnInit {
   }
 
   abaixarMusica(){
-    if(this.musicaAtual)this.musicaAtual.volume = 0.1;
+    if(this.musicaAtual)this.musicaAtual.volume = 0.09;
   }
 
   aumentarMusica(){

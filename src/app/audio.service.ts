@@ -13,6 +13,8 @@ export class AudioService {
   morte = new Audio('assets/morte.wav');
   irra = new Audio('assets/irra.wav');
   drum = new Audio('assets/drum.wav');
+  planted = new Audio('assets/planted.mp3');
+  dying = new Audio('assets/dying.mp3');
   explosao = new Audio('assets/expo.wav');
   buzina = new Audio('assets/sirene.mp3');
   ff7 = new Audio('assets/ff7.wav');
@@ -20,6 +22,19 @@ export class AudioService {
   musicas = ['assets/007.mp3','assets/beebop.mp3','assets/impossible.mp3','assets/Beethoven9Synphony.mp3','assets/All-Along-The-WatchTower.mp3','assets/overture.mp3','assets/Bob-Dylan-The-Times-They-Are-A-Changin.mp3','assets/valquiria.mp3','assets/whiplash.mp3','assets/evangelion.mp3','assets/sold.mp3','assets/creedance.mp3'];
   adesivos:any = ['🐵','🐶','🦁','🐱','🦊','🐺','👽','🤖','👻','👺','😈','🐭','🐗','🐲','🐼','🐨','🐸','🐟','🦞','🦆','🦅','🦉','🦀','🐧','🐤','🐝','🪰'];
   nomeTimes = ['Alpha','Bravo','Charlie','Delta','Echo','FoxTrot','Golf','Hotel','India','Juliett','Kilo','Lima','Mike','November','Oscar','Papa','Quebec','Romeu','Sierra','Tango','Uniform','Victor','Whiskey','X-Ray','Yankee','Zulu'];
+
+
+  tocarMorte(){
+    return this.playAudio(this.morte);
+  }
+
+  tocarBerroMorte(){
+    return this.playAudio(this.dying);
+  }
+
+  tocarPlanted(){
+    return this.playAudio(this.planted);
+  }
 
   async dizer(texto:any){
     let speech = new SpeechSynthesisUtterance();
