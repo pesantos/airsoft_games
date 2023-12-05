@@ -13,6 +13,42 @@
     font-family: 'Roboto';
 }
 
+.envolucro{
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'SEGOE UI';
+    font-weight: 300;
+    font-size: 14px;
+    border: 1px solid gray;
+    padding: 2px;
+    margin-top: 4px;
+    border-radius: 7px;
+    
+}
+
+.box-contendedores{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3px;
+}
+
+.numero-vidas{
+    font-weight: 700;
+}
+
+.morto{
+    opacity: 0.3;
+}
+
+.fundo-azul{
+    background-color: aliceblue;
+}
+
+.fundo-vermelho{
+    background-color: lavenderblush;
+}
+
 .botoes{
     display: inline-block;
     cursor: pointer;

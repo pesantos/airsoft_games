@@ -194,13 +194,17 @@ export class SixComponent implements OnInit {
     clearTimeout(this.game.g);
     this.dizer(`O jogo iniciará em 15 segundos`);
     this.pontape = setTimeout(()=>{
-      this.dizer('Jogo Iniciado').then(r=>{
-        this.playAudio(this.irra);
-        this.aumentarMusica();
-        this.tocarMusica();
+      this.dizer('Jogo Iniciado').then(async r=>{
+        await this.pontapeInicial();
       });
       this.loop()
     },this.game.tempoLoop);
+  }
+
+  async pontapeInicial(){
+        await this.playAudio(this.irra);
+        this.aumentarMusica();
+        this.tocarMusica();
   }
 
   novoJogo(){
@@ -228,6 +232,7 @@ export class SixComponent implements OnInit {
   processarPerdaDeVida(j){
     this.mostrarPrincipal = false;
     if(!j.vivo){
+      this.falas = [];
       this.falas.push(`${j.nome} você já está eliminado, aguarde a próxima rodada`);
       this.avisar('💀','eliminado');
       this.falar();
@@ -235,9 +240,11 @@ export class SixComponent implements OnInit {
     }
       if(j.vidas>0){
         j.vidas--;
+        this.falas = [];
         this.falas.push(`Operador ${j.nome} morreu, dirija-se para area de nascimento`);
         this.avisar('💀',`${j.nome} vá para o respawn`);
       }else if(j.vidas==0){
+        this.falas = [];
         this.falas.push(`Operador ${j.nome} eliminado, aguarde a próxima rodada`);
         j.vivo = false;//morre o cara
         this.avisar('💀',`${j.nome} eliminado`);
@@ -570,6 +577,7 @@ export class SixComponent implements OnInit {
   }
 
   async loop(){
+    console.log(this.game);
     this.configurando = false;
     if(this.game){
       console.log("Rodando loop");

@@ -44,6 +44,7 @@
                         Modo Bomba 💣
                     </div>
                     
+                    
     
                     <div *ngIf="mostrarPrincipal">
                         <app-padrao (resposta)="processar($event)"></app-padrao>
@@ -54,8 +55,54 @@
                             <div>{{textoAviso}}</div>
                         </div>
                     </div>
+                    
                 </div>
                 
+            </div>
+            <div *ngIf="game && game.jogadores">
+                <div class="box-contendedores">
+
+                    <section>
+                        <div *ngFor="let j of game.azuis">
+                            <div [class]="j.vivo?'':' morto'">
+                                <div class="envolucro fundo-azul">
+                                    <div style="font-size: 23px;">
+                                        👽
+                                    </div>
+                                    <div>
+                                        <div>
+                                            {{j.nome}}
+                                        </div>
+                                        <div>
+                                            💓Vidas: <span class="numero-vidas">{{j.vidas}}</span>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section>
+                        <div *ngFor="let j of game.vermelhos">
+                            <div [class]="j.vivo?'':' morto'">
+                                <div class="envolucro fundo-vermelho">
+                                    <div style="font-size: 23px;">
+                                        👹
+                                    </div>
+                                    <div>
+                                        <div>
+                                            {{j.nome}}
+                                        </div>
+                                        <div>
+                                           💓Vidas: <span class="numero-vidas">{{j.vidas}}</span>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
             </div>
         </div>
        
