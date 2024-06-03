@@ -108,6 +108,8 @@ export class MaletaComponent implements OnInit {
     this.restore = false;
   }
 
+ 
+
   async restaurar(){
     let d = localStorage.getItem(this.flagSave);
     if(d){

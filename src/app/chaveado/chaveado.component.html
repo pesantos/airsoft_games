@@ -1,0 +1,36 @@
+<p-dialog [header]="header" [(visible)]="telaChave['visivel']" [style]="{'width':'100vw'}">
+    <section *ngIf="tipo=='programar'" class="sequencia">
+        <div *ngFor="let s of sequencia" class="item-sequencia">
+            {{s.valor}}
+        </div>
+    </section>
+    <section class="grid">
+        <div *ngFor="let i of itens" class="item">
+            <div>
+                {{i}}
+            </div>
+            <div>
+                <p-inputSwitch (onChange)="mudou($event,i)" [(ngModel)]="memoria[i]"></p-inputSwitch>
+            </div>
+            <div class="dica" *ngIf="mapaGrid[i] && mapaGrid[i]['revelar']">
+                {{mapaGrid[i]?mapaGrid[i].ordem:''}}
+            </div>
+        </div>
+    </section>
+
+    <section *ngIf="tipo=='programar'">
+        <div>
+            <span style="color: red;">
+                {{erro}}
+            </span>
+        </div>
+        <button class="botaof" (click)="terminado()">
+            <div>
+                <i class="fa fa-check" style="font-size: 24px;color:rgb(97, 93, 93)" ></i>
+            </div>
+            <div class="legenda">
+                Terminado
+            </div>
+        </button>
+    </section>
+</p-dialog>

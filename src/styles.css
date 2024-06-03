@@ -1,6 +1,62 @@
-/* You can add global styles to this file, and also import other style files */
 @font-face {
+    font-family: "Roboto";
+    font-weight: 100 900;
+    font-display: swap;
+    font-style: normal;
+    font-named-instance: "Regular";
+    src: url("./assets/Inter-roman.var.woff2?v=3.19") format("woff2");
+}
+
+.titulo{
     font-family: 'Roboto';
-   
-    src: url(assets/Roboto-Regular.ttf) format("truetype");
+    font-weight: 723;
+    font-size: 22px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.sub{
+    font-family: 'Roboto';
+    font-weight: 723;
+    font-size: 16px;
+    color: rgb(71, 63, 63);
+    text-align: center;
+    text-transform: uppercase;
+}   
+
+.caixa{
+    padding: 5px;
+    border: 2px solid gray;
+    border-radius: 7px;
+    margin-top: 4px;
+}
+
+.centro-caixa{
+    display: flex;
+    justify-content: center;
+    gap:5px;
+}
+
+
+.botaof{
+    width: 100%;
+    margin-top: 7px;
+    margin-bottom: 3px;
+    border-radius: 4px;
+    background-color: white;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    gap: 11px;
+    align-items: center;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+.legenda{
+    color:rgb(97, 93, 93);
+    font-weight: 718;
+    font-size: 23px;
+    letter-spacing: -0.019em;
+    text-transform: uppercase;
 }

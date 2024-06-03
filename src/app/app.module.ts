@@ -6,6 +6,8 @@ import { AppComponent } from './app.component';
 import { ContadorComponent } from './contador/contador.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {InputTextModule} from 'primeng/inputtext';
+
+import {InputSwitchModule} from 'primeng/inputswitch';
 import {SliderModule} from 'primeng/slider';
 import {DropdownModule} from 'primeng/dropdown';
 import {ProgressBarModule} from 'primeng/progressbar';
@@ -33,6 +35,8 @@ import { PadraoComponent } from './padrao/padrao.component';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {ConfirmationService} from 'primeng/api';
 import {CheckboxModule} from 'primeng/checkbox';
+import { BombComponent } from './bomb/bomb.component';
+import { ChaveadoComponent } from './chaveado/chaveado.component';
 
 @NgModule({
   declarations: [
@@ -48,12 +52,15 @@ import {CheckboxModule} from 'primeng/checkbox';
     CaboComponent,
     RegressivoComponent,
     SixComponent,
-    PadraoComponent
+    PadraoComponent,
+    BombComponent,
+    ChaveadoComponent
   ],
   imports: [
     BrowserModule,
     DialogModule,
     DropdownModule,
+    InputSwitchModule,
     FormsModule,
     SidebarModule,
     RadioButtonModule,

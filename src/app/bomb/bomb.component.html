@@ -1,0 +1,200 @@
+<section *ngIf="jogo && jogo.configurando">
+    <div class="titulo">
+        CONFIGURAÇÃO DO JOGO
+    </div>
+    <div class="caixa">
+        <div class="sub">
+            Tempo das Bombas (minutos)
+        </div>
+        <div>
+            <p-slider [(ngModel)]="jogo.tempoPadrao" [min]="1" [max]="120"></p-slider>
+        </div>
+        <div class="sub">
+            {{jogo.tempoPadrao}}
+        </div>
+    </div>
+
+    <div class="caixa">
+        <div class="sub">
+            Tamanho do GRID
+        </div>
+        <div>
+            <p-slider [(ngModel)]="jogo.tamanho" [min]="4" [max]="160" [step]="4"></p-slider>
+        </div>
+        <div class="sub">
+            {{jogo.tamanho}}
+        </div>
+    </div>
+
+    <div class="caixa">
+        <div class="sub">
+            Revelação Automática ao passar o tempo
+        </div>
+        <div class="centro-caixa">
+            <p-checkbox [(ngModel)]="jogo.revelar" binary="true" inputId="binary"></p-checkbox> 
+            <span class="sub">
+                {{jogo['revelar']?'Revelar ao passar o tempo':'não revelar'}}
+            </span>
+        </div>
+        
+    </div>
+
+    <div class="caixa">
+        <div class="sub">
+           Explodir ao Errar Código
+        </div>
+        <div class="centro-caixa">
+            <p-checkbox [(ngModel)]="jogo.explodir" binary="true" inputId="binary"></p-checkbox> 
+            <span class="sub">
+                {{jogo['explodir']?'Explode caso o código digitado esteja incorreto':'errar não explode a bomba'}}
+            </span>
+        </div>
+        
+    </div>
+
+    <div class="caixa">
+        <div class="sub">
+            Cores Disponíveis
+        </div>
+        <div class="centro-caixa">
+            <div>
+                <p-checkbox [(ngModel)]="jogo.cores" value="red"></p-checkbox> <span class="sub" style="color:red">Vermelho</span> 
+            </div>
+            <div>
+                <p-checkbox [(ngModel)]="jogo.cores" value="blue" ></p-checkbox> <span class="sub" style="color:blue">Azul</span> 
+            </div>
+            <div>
+                <p-checkbox [(ngModel)]="jogo.cores" value="black" ></p-checkbox> <span class="sub" style="color:black">Preto</span> 
+            </div>
+            <div>
+                <p-checkbox [(ngModel)]="jogo.cores" value="green" ></p-checkbox> <span class="sub" style="color:green">Verde</span> 
+            </div>
+            
+        </div>
+
+        
+        
+    </div>
+
+    <button class="botaof" (click)="pronto()">
+        <div>
+            <i class="fa fa-check" style="font-size: 24px;color:rgb(97, 93, 93)" ></i>
+        </div>
+        <div class="legenda">
+            Tudo Pronto
+        </div>
+    </button>
+</section>
+
+<section *ngIf="jogo && !jogo.configurando && jogo.status!='intermission'">
+    <section *ngIf="jogo.status==''">
+        <div class="titulo">
+            selecione a bomba para armar
+        </div>
+        <section class="centro-caixa">
+            
+            <div *ngFor="let b of jogo.cores" [class]="'botao '+b" (click)="armar(b)">
+                <div>
+                    <i [class]="'fa fa-bomb '+b" style="font-size: 70px !important;" aria-hidden="true" ></i>
+                </div>
+                <div [class]="'sub '+b">
+                    ARMAR
+                </div>
+            </div>
+        </section>
+
+        <div class="historico">
+            <button class="botaof" (click)="historico()">
+                <div>
+                    <i class="fa fa-search" style="font-size: 24px;color:rgb(97, 93, 93)" ></i>
+                </div>
+                <div class="legenda">
+                    Mostrar Histórico
+                </div>
+            </button>
+        </div>
+    </section>
+
+    <section *ngIf="jogo.status=='armada'" class="todo-armada">
+        <div class="grafico">
+            <i [class]="'fa fa-bomb '+jogo.bomba.cor" style="font-size: 90vw !important;" aria-hidden="true" ></i>
+        </div>
+        <div class="tempo">
+           {{jogo.bomba.stringTempo}}
+        </div>
+        <div>
+            <button class="botaof" (click)="desarmar()">
+                <div>
+                    <i class="fa fa-check" style="font-size: 24px;color:rgb(97, 93, 93)" ></i>
+                </div>
+                <div class="legenda">
+                    DESARMAR
+                </div>
+            </button>
+        </div>
+
+    </section>
+
+</section>
+
+
+<section *ngIf="jogo.status=='intermission'">
+    <section *ngIf="jogo.img=='sucesso'" class="intermission" style="color: green!important;">
+        <div>
+            <i class="fa fa fa-smile-o" style="font-size: 350px!important;"></i>
+        </div>
+        <div>
+            DESARMADA
+        </div>
+    </section>
+    <section *ngIf="jogo.img=='explosao'" class="intermission balanca" style="color: red!important;">
+        <div>
+            <i class="fa fa fa-bomb" style="font-size: 350px!important;"></i>
+        </div>
+        <div>
+            BOOOM
+        </div>
+    </section>
+
+</section>
+
+
+<p-dialog header="Restaurar Jogo" [(visible)]="restore">
+    Deseja restaurar o jogo que estava em andamento?
+    <div class="aninhado" style="width: 270px;margin-top: 20px;">
+        <button pButton pRipple type="button" label="LIMPAR" [ngStyle]="{'width':'100%'}" (click)="limpar()" class="p-button-raised p-button-danger"></button>
+    </div>
+
+    
+    <div class="aninhado" style="width: 270px;margin-top: 20px;">
+        <button pButton pRipple type="button" label="CANCELAR" [ngStyle]="{'width':'100%'}" (click)="cancelar()" class="p-button-raised p-button-info"></button>
+    </div>
+
+    
+
+    <div class="aninhado" style="width: 270px;margin-top: 20px;">
+        <button pButton pRipple type="button" label="RESTAURAR" [ngStyle]="{'width':'100%'}" (click)="restaurar()" class="p-button-raised p-button-success"></button>
+    </div>
+</p-dialog>
+
+
+
+
+<app-chaveado #chaveado (acao)="armou($event)"></app-chaveado>
+
+
+<p-sidebar [(visible)]="visaoHistorico['visivel']" [baseZIndex]="10000">
+    <div class="titulo">
+        Historico das Bombas
+    </div>
+    <section class="rolagem">
+        <div *ngFor="let b of jogo.historico" [class]="b.cor+' item-historico'" >
+            <div>
+                {{b.nomeCor}}
+            </div>
+            <div>
+                {{b.explodida?'EXPLODIDA':'DESARMADA'}}
+            </div>
+        </div>
+    </section>
+</p-sidebar>

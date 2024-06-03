@@ -9,6 +9,7 @@ import { TesteComponent } from './teste/teste.component';
 import { ContadorComponent } from './contador/contador.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { BombComponent } from './bomb/bomb.component';
 
 
 
@@ -19,6 +20,7 @@ const routes: Routes = [
   { path: 'pontos', component: PontosComponent },
   { path: 'teste', component: TesteComponent },
   { path: 'six', component: SixComponent },
+  { path: 'bomb', component: BombComponent },
   { path: 'maleta', component: MaletaComponent },
   { path: 'cabo', component: CaboComponent },
   { path: 'seletor', component: SeletorComponent },

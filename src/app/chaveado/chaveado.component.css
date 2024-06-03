@@ -1,0 +1,43 @@
+.grid{
+    display: flex;
+    gap: 11px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.item-sequencia::after{
+    content: '➡️';
+}
+
+.sequencia{
+    display: flex;
+    gap: 3px;
+    font-weight: 700;
+    font-size: 30px;
+    justify-content: center;
+    color: white;
+    background-color: black;
+    margin-bottom: 7px;
+    flex-wrap: wrap;
+}
+
+.item{
+    font-weight: 900;
+    font-family: 'Roboto';
+    font-size: 19px;
+    text-align: center;
+    border: solid gray 2px;
+    border-radius: 4px;
+    padding: 11px;
+    margin-inline: 2px;
+    position: relative;
+}
+
+.dica{
+    position: absolute;
+    bottom: 0px;
+    right: 3px;
+    color: red;
+    font-size: 13px;
+}
