@@ -19,7 +19,7 @@
             Tamanho do GRID
         </div>
         <div>
-            <p-slider [(ngModel)]="jogo.tamanho" [min]="4" [max]="160" [step]="4"></p-slider>
+            <p-slider [(ngModel)]="jogo.tamanho" [min]="3" [max]="81" [step]="3"></p-slider>
         </div>
         <div class="sub">
             {{jogo.tamanho}}
@@ -34,6 +34,19 @@
             <p-checkbox [(ngModel)]="jogo.revelar" binary="true" inputId="binary"></p-checkbox> 
             <span class="sub">
                 {{jogo['revelar']?'Revelar ao passar o tempo':'não revelar'}}
+            </span>
+        </div>
+        
+    </div>
+
+    <div class="caixa">
+        <div class="sub">
+            Tem que informar o tempo ao armar
+        </div>
+        <div class="centro-caixa">
+            <p-checkbox [(ngModel)]="jogo.aoarmar" binary="true" inputId="binary"></p-checkbox> 
+            <span class="sub">
+                {{jogo['aoarmar']?'Tem que informar o tempo ao armar':'arma com tempo padrão'}}
             </span>
         </div>
         
@@ -158,6 +171,29 @@
 
 </section>
 
+<p-dialog header="Definir tempo da Bomba" [(visible)]="telaArmar['visivel']">
+    <div class="imputador">
+        
+            <div (click)="alterar(-5)">
+                <i class="fa fa-minus" style="font-size: 30px;color:rgb(97, 93, 93)" ></i>
+            </div>
+            <div>
+                {{telaArmar.tempo}}
+            </div>
+            <div (click)="alterar(+5)">
+                <i class="fa fa-plus" style="font-size: 30px;color:rgb(97, 93, 93)" ></i>
+            </div>
+        
+    </div>
+    <button class="botaof" (click)="armarT()">
+        <div>
+            <i class="fa fa-check" style="font-size: 24px;color:rgb(97, 93, 93)" ></i>
+        </div>
+        <div class="legenda">
+            Armar
+        </div>
+    </button>
+</p-dialog>
 
 <p-dialog header="Restaurar Jogo" [(visible)]="restore">
     Deseja restaurar o jogo que estava em andamento?
@@ -186,6 +222,40 @@
 <p-sidebar [(visible)]="visaoHistorico['visivel']" [baseZIndex]="10000">
     <div class="titulo">
         Historico das Bombas
+    </div>
+    <div style="display: flex;gap:5px;justify-content: space-evenly;">
+        <div class="it" style="color:blue">
+            <div class="azul">
+
+            </div>
+            <div>
+                {{this.visaoHistorico['azul']}}
+            </div>
+        </div>
+        <div class="it" style="color:black">
+            <div class="preto">
+
+            </div>
+            <div>
+                {{this.visaoHistorico['preto']}}
+            </div>
+        </div>
+        <div class="it" style="color:green">
+            <div class="verde">
+
+            </div>
+            <div>
+                {{this.visaoHistorico['verde']}}
+            </div>
+        </div>
+        <div class="it" style="color:red">
+            <div class="vermelho">
+
+            </div>
+            <div>
+                {{this.visaoHistorico['vermelho']}}
+            </div>
+        </div>
     </div>
     <section class="rolagem">
         <div *ngFor="let b of jogo.historico" [class]="b.cor+' item-historico'" >

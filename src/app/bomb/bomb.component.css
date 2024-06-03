@@ -52,6 +52,58 @@
 
 }
 
+.imputador{
+  display: flex;
+  gap: 18px;
+  font-weight: 600;
+  font-family: 'Roboto';
+  font-size: 46px;
+  justify-content: space-evenly;
+  margin-bottom: 47px;
+}
+
+.azul{
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  aspect-ratio: 1/1;
+  background-color: blue;
+}
+
+.preto{
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  aspect-ratio: 1/1;
+  background-color: black;
+}
+
+
+
+.it{
+  display: flex;
+  gap: 3px;
+  font-weight: 600;
+  font-size: 18px;
+  
+}
+
+.verde{
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  aspect-ratio: 1/1;
+  background-color: green;
+}
+
+.vermelho{
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  aspect-ratio: 1/1;
+  background-color: red;
+}
+
 .item-historico{
     border: 2px solid gray;
     padding: 5px;

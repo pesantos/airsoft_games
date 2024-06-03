@@ -4,6 +4,9 @@
             {{s.valor}}
         </div>
     </section>
+    <section *ngIf="bomba && bomba.stringTempo && tipo!='programar'" class="titulo">
+        {{bomba.stringTempo}}
+    </section>
     <section class="grid">
         <div *ngFor="let i of itens" class="item">
             <div>
@@ -14,6 +17,9 @@
             </div>
             <div class="dica" *ngIf="mapaGrid[i] && mapaGrid[i]['revelar']">
                 {{mapaGrid[i]?mapaGrid[i].ordem:''}}
+            </div>
+            <div class="dica" *ngIf="bomba && bomba.grid && bomba.grid[i] && bomba.grid[i]['revelar']">
+                {{bomba.grid[i]?bomba.grid[i].ordem:''}}
             </div>
         </div>
     </section>

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-chaveado',
@@ -10,6 +10,7 @@ export class ChaveadoComponent implements OnInit {
   constructor() { }
 
   @Output() acao = new EventEmitter();
+  @Input()pai:any;
   ngOnInit() {
   }
 
@@ -127,7 +128,8 @@ export class ChaveadoComponent implements OnInit {
     for(let i = 1; i<=this.jogo.tamanho;i++){
       this.itens.push(i);
     }
-    this.bomba.segredo.forEach(s=>this.mapaGrid[s.valor]=s);
+    this.bomba.grid = Object.create(null);
+    this.bomba.segredo.forEach(s=>this.bomba.grid[s.valor]=s);
     this.telaChave = Object.create(null);
     const t = setTimeout(()=>{
       this.telaChave.visivel = true;
@@ -137,6 +139,44 @@ export class ChaveadoComponent implements OnInit {
   sumirView(){
     this.telaChave = Object.create(null);
     this.reset();
+  }
+
+  obterItemRandom(li){
+    return li[Math.floor(Math.random() * li.length)];
+  }
+
+  colocarBomba(b){
+    this.bomba = b;
+  }
+
+  revelar(){
+    if(this.bomba){
+      const tempo = this.bomba.tempo*60;
+      const tempoRestante = this.bomba.tempoRestante;
+      const percentual = parseInt(((tempoRestante/tempo)*100)+'');
+      // console.log(`${this.bomba.segredo.length} ${percentual}%`);
+      const quantas = parseInt(((this.bomba.segredo.length*((100-percentual)/100)))+'');
+      const reveladas = Object.values(this.bomba.grid).filter((i:any)=>i.revelar).length;
+      // console.log(`Quantas: ${quantas}`,`Reveladas:${reveladas}`);
+      const paraRevelar = quantas-reveladas;
+      // console.log("Para revelar ", paraRevelar);
+      if(paraRevelar>0){
+        for(let i = 0; i<paraRevelar;i++){
+          this.goRevelar();
+        }
+      }
+      if(percentual<20){
+        Object.values(this.bomba.grid).forEach((i:any)=>i.revelar = true);
+      }
+    }
+    // console.log("Tentando revelar", this.bomba);
+    
+  }
+
+  goRevelar(){
+    const li = Object.values(this.bomba.grid).filter((i:any)=>!i.revelar);
+    const i = this.obterItemRandom(li);
+    if(i)i.revelar = true;
   }
 
   programar(numero,cor,bomba){
