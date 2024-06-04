@@ -9,6 +9,8 @@ export class AudioService {
 
   musicaAtual = null;
   cogumelo = new Audio('assets/cogumelo.wav');
+  beep_sucesso = new Audio('assets/beep_sucesso.mp3');
+  beep_erro = new Audio('assets/beep_erro.mp3');
   clock = new Audio('assets/clock.mp3');
   morte = new Audio('assets/morte.wav');
   irra = new Audio('assets/irra.wav');

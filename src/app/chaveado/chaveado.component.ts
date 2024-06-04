@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AudioService } from '../audio.service';
 
 @Component({
   selector: 'app-chaveado',
@@ -7,7 +8,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class ChaveadoComponent implements OnInit {
 
-  constructor() { }
+  constructor(private audio:AudioService) { }
 
   @Output() acao = new EventEmitter();
   @Input()pai:any;
@@ -41,6 +42,7 @@ export class ChaveadoComponent implements OnInit {
     console.log("Mudou ", ev.checked, i);
     if(!ev.checked){
       this.reset();
+      this.audio.playAudio(this.audio.beep_erro);
       return;
     }
 
@@ -63,10 +65,12 @@ export class ChaveadoComponent implements OnInit {
     console.log("Avaliando ", i, this.bomba.segredo[this.ordem-1], `Ordem: ${this.ordem}`)
     if(!ev.checked){
       console.log("DESARME ")
+      
       this.reset();
       if(this.jogo.explodir){
         this.acao.emit('explodir');
       }
+      this.audio.playAudio(this.audio.beep_erro);
     }
     if(this.bomba.segredo[this.ordem-1] && i==this.bomba.segredo[this.ordem-1].valor){
       console.log("Acertou ")
@@ -78,6 +82,7 @@ export class ChaveadoComponent implements OnInit {
         this.acao.emit('desarmar');
         this.telaChave = Object.create(null);
       }
+      this.audio.playAudio(this.audio.beep_sucesso);
     }else{
       console.log("ERROU ")
       this.reset();
@@ -85,6 +90,7 @@ export class ChaveadoComponent implements OnInit {
         this.telaChave = Object.create(null);
         this.acao.emit('explodir');
       }
+      this.audio.playAudio(this.audio.beep_erro);
     }
     
   }
