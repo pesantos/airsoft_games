@@ -41,6 +41,31 @@
 
     <div class="caixa">
         <div class="sub">
+            Punição de Tempo ao errar
+        </div>
+        <div class="centro-caixa">
+            <p-checkbox [(ngModel)]="jogo.punicao" binary="true" inputId="binary"></p-checkbox> 
+            <span class="sub">
+                {{jogo['punicao']?'Puni o operador quando ele erra':'sem punição'}}
+            </span>
+        </div>
+        
+    </div>
+
+    <div class="caixa" *ngIf="jogo['punicao']">
+        <div class="sub">
+            Segundos Perdidos ao errar combinação
+        </div>
+        <div>
+            <p-slider [(ngModel)]="jogo.punicaoSegundos" [min]="1" [max]="500"></p-slider>
+        </div>
+        <div class="sub">
+            {{jogo.punicaoSegundos}}
+        </div>
+    </div>
+
+    <div class="caixa">
+        <div class="sub">
             Tem que informar o tempo ao armar
         </div>
         <div class="centro-caixa">

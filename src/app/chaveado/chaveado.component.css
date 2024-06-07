@@ -34,6 +34,12 @@
     position: relative;
 }
 
+.aviso-perda{
+    color: red;
+    font-family: 'Roboto';
+    font-size: 13px;
+}
+
 .dica{
     position: absolute;
     bottom: 0px;

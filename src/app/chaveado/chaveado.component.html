@@ -5,6 +5,9 @@
         </div>
     </section>
     <section *ngIf="bomba && bomba.stringTempo && tipo!='programar'" class="titulo">
+        <div *ngIf="jogo && jogo.bomba && jogo.bomba['perdido']" class="aviso-perda"> 
+            💀Perdeu {{jogo.bomba.perdido}} segundos!
+        </div>
         {{bomba.stringTempo}}
     </section>
     <section class="grid">

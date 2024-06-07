@@ -42,6 +42,7 @@ export class BombComponent implements OnInit {
     j.explodir = false;
     j.status = '';
     j.tamanho = 3;
+    j.punicaoSegundos = 1;
     j.fala = 0;
     j.historico = [];
     return j;
@@ -235,7 +236,10 @@ export class BombComponent implements OnInit {
     this.aser.dizer(r);
   }
 
+  
   loop(){
+    
+    
     if(this.jogo.status = 'armada'){
       this.jogo.bomba.tempoRestante-= 1;
       this.jogo.bomba.minutosRestante = parseInt((this.jogo.bomba.tempoRestante/60)+'');

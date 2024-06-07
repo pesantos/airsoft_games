@@ -86,6 +86,18 @@ export class ChaveadoComponent implements OnInit {
     }else{
       console.log("ERROU ")
       this.reset();
+      if(this.jogo['punicao']){
+        if(this.jogo && this.jogo.bomba){
+          this.jogo.bomba.tempoRestante-= parseInt(this.jogo.punicaoSegundos);
+          this.jogo.bomba.perdido = this.jogo.punicaoSegundos;
+          
+          const timer = setTimeout(()=>{
+            if(this.jogo.bomba) delete this.jogo.bomba.perdido;
+          },2000);
+        }
+        
+        console.log("houve punicao ", this.jogo, this.jogo.punicaoSegundos);
+      }
       if(this.jogo.explodir){
         this.telaChave = Object.create(null);
         this.acao.emit('explodir');
