@@ -1,13 +1,12 @@
-<div style="text-align: center;width: 98vw;">
+<div style="text-align: center;width: 100vw;">
     <div *ngIf="game && game.iniciado">
         <div class="ponto">
             {{game.pontos[game.pontoAtual].descricao}}
-            <div *ngIf="game.acionado">
-                <div [class]="game.acionado" style="display: inline-block;border-radius: 50%;width: 50px;height: 50px;">
-                    
-                </div>
-                <div style="display: inline-block;top: -13px;position: relative;">
-                    {{aser.tempoString(getPonto().tempoRestante)}}
+            <div *ngIf="game.acionado" class="quadro-b">
+                <div [class]="game.acionado+' bomba-ilustracao'">
+                    <div style="display: inline-block;top: -13px;position: relative;">
+                        {{aser.tempoString(getPonto().tempoRestante)}}
+                    </div>
                 </div>
             </div>
         </div>
@@ -41,8 +40,12 @@
     <app-timer (finalizar)="startar($event)" *ngIf="game.mostrarTimer"></app-timer>
 </div>
 
-
-<app-painel-de-senha [visivel]="campoSenha" (emissor)="recebeuModificador($event)"></app-painel-de-senha>
+<section *ngIf="mostrarCodigo" class="painel-absoluto">
+    <div class="local-painel">
+        <app-padrao  (resposta)="recebeuModificador($event)"></app-padrao>
+    </div>
+</section>
+<!-- <app-painel-de-senha [visivel]="campoSenha" (emissor)="recebeuModificador($event)"></app-painel-de-senha> -->
 
 
 <p-dialog header="Restaurar Jogo" [(visible)]="restore">

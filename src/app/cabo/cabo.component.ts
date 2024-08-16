@@ -40,14 +40,22 @@ export class CaboComponent implements OnInit {
     this.restore = false;
   }
 
+  mostrarCodigo: boolean = false;
   async acao(){
     if(this.game.fim)return;
-    this.campoSenha = new Date();
+    // this.campoSenha = new Date();
+    this.mostrarCodigo = true;
+  }
+
+  recebeuResposta(ev){
     
+    console.log("A resposta ", ev);
   }
 
   recebeuModificador(sen){
+    let t = setTimeout(()=>{this.mostrarCodigo = false},500);
     let senhas = this.game.pontos[this.game.pontoAtual].senhas;
+    console.log("Senhas ", sen, senhas);
     if(sen==senhas[0]){
       this.acaoCor('Vermelho');
       return;
@@ -100,11 +108,11 @@ export class CaboComponent implements OnInit {
     this.getPonto().explodido.push(this.game.acionado);
     this.getPonto().proprietario = null;
     
-    if(this.game.acionado=='Vermelho'){ 
+    if(this.game.acionado=='Vermelho'){ //vermelho anda pra frente, para o final do array
       
       if(!this.game.pontos[this.game.pontoAtual+1])this.vitoria('Vermelho');
       if(this.game.pontos[this.game.pontoAtual+1])this.game.pontoAtual+=1;
-    }else{
+    }else{ // azul vai pra trás, para o principio do array
       
       if(!this.game.pontos[this.game.pontoAtual-1])this.vitoria('Azul');
       if(this.game.pontos[this.game.pontoAtual-1])this.game.pontoAtual-=1;
@@ -181,7 +189,7 @@ export class CaboComponent implements OnInit {
   novoJogo(){
     let g = {
       logs:[],
-      pontoAtual:3,//primeiro ponto
+      pontoAtual:2,//primeiro ponto
       idLog:1,
       idJogador:1,
       mensagem:'',
@@ -191,77 +199,67 @@ export class CaboComponent implements OnInit {
       acionado:null,//time dominante
       pontos:[],
       jogadores:['Vermelho','Azul'],
-      minutosFuga:15,
+      minutosFuga:1,
       timer:0,//tempo para detonação do ponto atual
       timerString:null,// representação do relógio da bomba
       iniciado:false,//jogo rolando
       tempoLoop:15000,//tempo do loop
       fim : false,//jogo terminou
       tempoPadrao:(1000*60*15),//quinze minutos
-      tempoReduzido:(1000*60*4),
+      tempoReduzido:(1000*60*3),
       mostrarTimer:true,
     }
     return g;
   }
 
+  TEMPOPADRAO: number = 18;
+  SENHA_VERMELHA = 'MTYzODExODY5';
+  SENHA_AZUL = 'LTMyODU2NjY1OQ==';
+
   inicializarLafage(){
-    this.game.pontos.push({
-      descricao:'Matagal',
-      proprietario:null,
-      tempoPadrao: (1000*60*20),
-      tempoRestante:(1000*60*20),
-      senhas:['998875','902322'],
-      explodido:[]
-    });
-    this.game.pontos.push({
-      descricao:'Garagem',
-      proprietario:null,
-      tempoPadrao: (1000*60*15),
-      tempoRestante:(1000*60*15),
-      senhas:['212123','343435'],
-      explodido:[]
-    });
-    this.game.pontos.push({
-      descricao:'Oficina',
-      proprietario:null,
-      tempoPadrao: (1000*60*15),
-      tempoRestante:(1000*60*15),
-      senhas:['557389','876334'],
-      explodido:[]
-    });
-    this.game.pontos.push({
-      descricao:'Laboratório',
-      proprietario:null,
-      tempoPadrao: (1000*60*15),
-      tempoRestante:(1000*60*15),
-      senhas:['335566','985612'],
-      explodido:[]
-    });
-
-    this.game.pontos.push({
-      descricao:'Refinaria',
-      proprietario:null,
-      tempoPadrao: (1000*60*15),
-      tempoRestante:(1000*60*15),
-      senhas:['777444','334568'],
-      explodido:[]
-    });
-
-    this.game.pontos.push({
-      descricao:'Prisão',
-      proprietario:null,
-      tempoPadrao: (1000*60*15),
-      tempoRestante:(1000*60*15),
-      senhas:['239999','128845'],
-      explodido:[]
-    });
-
     this.game.pontos.push({
       descricao:'Cemitério',
       proprietario:null,
-      tempoPadrao: (1000*60*20),
-      tempoRestante:(1000*60*20),
-      senhas:['999881','888334'],
+      tempoPadrao: (1000*60*(this.TEMPOPADRAO+5)),
+      tempoRestante:(1000*60*(this.TEMPOPADRAO+5)),
+      senhas:[this.SENHA_VERMELHA,this.SENHA_AZUL],
+      explodido:[]
+    });
+  
+    this.game.pontos.push({
+      descricao:'Prisão',
+      proprietario:null,
+      tempoPadrao: (1000*60*this.TEMPOPADRAO),
+      tempoRestante:(1000*60*this.TEMPOPADRAO),
+      senhas:[this.SENHA_VERMELHA,this.SENHA_AZUL],
+      explodido:[]
+    });
+    this.game.pontos.push({
+      descricao:'Poste',
+      proprietario:null,
+      tempoPadrao: (1000*60*this.TEMPOPADRAO),
+      tempoRestante:(1000*60*this.TEMPOPADRAO),
+      senhas:[this.SENHA_VERMELHA,this.SENHA_AZUL],
+      explodido:[]
+    });
+
+   
+
+    this.game.pontos.push({
+      descricao:'Bambuzal',
+      proprietario:null,
+      tempoPadrao: (1000*60*this.TEMPOPADRAO),
+      tempoRestante:(1000*60*this.TEMPOPADRAO),
+      senhas:[this.SENHA_VERMELHA,this.SENHA_AZUL],
+      explodido:[]
+    });
+
+    this.game.pontos.push({
+      descricao:'Porteira',
+      proprietario:null,
+      tempoPadrao: (1000*60*(this.TEMPOPADRAO+5)),
+      tempoRestante:(1000*60*(this.TEMPOPADRAO+5)),
+      senhas:[this.SENHA_VERMELHA,this.SENHA_AZUL],
       explodido:[]
     });
   }

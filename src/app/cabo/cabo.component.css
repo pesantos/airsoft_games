@@ -18,6 +18,34 @@
     padding: 32px;
 }
 
+.local-painel{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100dvh;
+}
+
+.quadro-b{
+    display: flex;
+    justify-content: center;
+}
+
+.bomba-ilustracao{
+    display: flex;
+    border-radius: 50%;
+    width: 200px;
+    height: 200px;
+    justify-content: center;
+    align-items: center;
+}
+
+.painel-absoluto{
+    position: fixed;
+    top: 0px;
+    width: 100%;
+    background-color: rgba(241, 233, 233, 0.7);
+}
+
 .botao{
     border-radius: 13px;
 margin: 4px;
