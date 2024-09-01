@@ -6,15 +6,23 @@
         <div class="sub">
             Tempo das Bombas (minutos)
         </div>
+        <div class="botoes-mais">
+            <div class="bt-meme noselect" (click)="menos()">
+                ➖
+            </div>
+            <div class="bt-meme noselect" (click)="mais()">
+                ➕
+            </div>
+        </div>
         <div>
-            <p-slider [(ngModel)]="jogo.tempoPadrao" [min]="1" [max]="120"></p-slider>
+            <p-slider [(ngModel)]="jogo.tempoPadrao" [min]="0.5" [step]="0.5" [max]="120"></p-slider>
         </div>
         <div class="sub">
             {{jogo.tempoPadrao}}
         </div>
     </div>
 
-    <div class="caixa">
+    <div class="caixa" *ngIf="!jogo['teclado']">
         <div class="sub">
             Tamanho do GRID
         </div>
@@ -26,7 +34,7 @@
         </div>
     </div>
 
-    <div class="caixa">
+    <div class="caixa" *ngIf="!jogo['teclado']">
         <div class="sub">
             Revelação Automática ao passar o tempo
         </div>
@@ -39,7 +47,7 @@
         
     </div>
 
-    <div class="caixa">
+    <div class="caixa" *ngIf="!jogo['teclado']">
         <div class="sub">
             Punição de Tempo ao errar
         </div>
@@ -64,7 +72,7 @@
         </div>
     </div>
 
-    <div class="caixa">
+    <div class="caixa" *ngIf="!jogo['teclado']">
         <div class="sub">
             Tem que informar o tempo ao armar
         </div>
@@ -86,6 +94,52 @@
             <span class="sub">
                 {{jogo['explodir']?'Explode caso o código digitado esteja incorreto':'errar não explode a bomba'}}
             </span>
+        </div>
+        
+    </div>
+
+    <div class="caixa">
+        <div class="sub">
+           Usar Teclado Numérico
+        </div>
+        <div class="centro-caixa">
+            <p-checkbox [(ngModel)]="jogo.teclado" binary="true" inputId="binary"></p-checkbox> 
+            <span class="sub">
+                {{jogo['teclado']?'Teclado numérico ativo':'grid de interruptores ativo'}}
+            </span>
+        </div>
+        
+    </div>
+
+    <div class="caixa">
+        <div class="sub">
+           Usar Senha Padrao de Armar e Desarmar
+        </div>
+        <div class="centro-caixa">
+            <p-checkbox [(ngModel)]="jogo.senhapadrao" binary="true" inputId="binary"></p-checkbox> 
+            <span class="sub">
+                {{jogo['senhapadrao']?'Senha padrao ativada':'Senha ao ativar'}}
+            </span>
+        </div>
+        
+    </div>
+
+    <div class="caixa" *ngIf="jogo['senhapadrao']">
+        <div class="sub">
+          Informe a Senha padrao
+        </div>
+        <div class="botoes-bomab">
+            <button class="botaof" style="max-width: 250px;" (click)="novaSenhaPadrao()">
+                <div>
+                    <i class="fa fa-check" style="font-size: 15px;color:rgb(97, 93, 93)" ></i>
+                </div>
+                <div class="legenda" class="font-size:17px">
+                    Informar Senha
+                </div>
+            </button>
+            <div>
+                {{jogo && jogo['senhaPadrao']?jogo.senhaPadrao:'...'}}
+            </div>
         </div>
         
     </div>
@@ -242,6 +296,7 @@
 
 
 <app-chaveado #chaveado (acao)="armou($event)"></app-chaveado>
+<app-painel-de-senha *ngIf="painelSenha['visivel']" #painelsenha [visivel]="painelSenha['visivel']" (emissor)="recebeuSenhaNumerica($event)"></app-painel-de-senha>
 
 
 <p-sidebar [(visible)]="visaoHistorico['visivel']" [baseZIndex]="10000">

@@ -52,6 +52,39 @@
 
 }
 
+.botoes-bomab{
+  display: flex;
+  gap: 25px;
+  font-size: 35px;
+  font-weight: 600;
+  justify-content: center;
+  align-items: center;
+}
+
+.bt-meme{
+  font-size: 30px;
+  border: solid 1px gray;
+  border-radius: 10px;
+  padding: 3px;
+  cursor: pointer;
+}
+
+.noselect{
+  -webkit-user-select: none;
+/* Para outros navegadores: */
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+}
+
+.botoes-mais{
+  display: flex;
+  justify-content: space-between;
+  margin-inline: 11px;
+  padding-bottom: 13px;
+  padding-top: 10px;
+}
+
 .imputador{
   display: flex;
   gap: 18px;

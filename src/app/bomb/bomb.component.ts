@@ -31,7 +31,94 @@ export class BombComponent implements OnInit {
   restore: boolean = false;
 
   desarmar(){
-    this.chaveado.desarmar(this.jogo.bomba, this.jogo);
+    if(!this.jogo['teclado'])this.chaveado.desarmar(this.jogo.bomba, this.jogo);
+    if(this.jogo['teclado']){
+      this.painelSenha = Object.create(null);
+      this.painelSenha.tipo = 'desarmar';
+      setTimeout(()=>{
+        this.painelSenha.visivel = true;
+      },200);
+    }
+  }
+
+  
+  painelSenha = Object.create(null);
+  async recebeuSenhaNumerica(senha:any){
+    console.log("A senha recebida ", senha);
+    if(this.painelSenha['tipo'] && this.painelSenha.tipo == 'padrao'){
+      this.jogo.senhaPadrao = senha;
+      this.jogo.teclado = true;
+      this.painelSenha = Object.create(null);
+      return;
+    }
+    if(this.painelSenha['tipo'] && this.painelSenha.tipo == 'armar'){
+      if(senha!=this.jogo.senhaPadrao){
+        this.aser.dizer('Senha de armação incorreta');
+       
+        return;
+      }
+      this.jogo.bomba.tempo = this.jogo.tempoPadrao;
+      this.jogo.bomba.acionada = true;
+      this.jogo.bomba.tempoRestante = this.jogo.bomba.tempo*60;
+      console.log("O jogo ", this.jogo);
+      this.jogo.status = 'armada';
+      this.aser.dizer(`A bomba ${this.jogo.bomba.cor} foi armada`);
+      this.acionarLoop();
+      this.aser.tocarMusica();
+      this.salvarOffline();
+      return;
+    }
+
+    if(this.painelSenha['tipo'] && this.painelSenha.tipo == 'desarmar' ){
+      if(senha != this.jogo.senhaPadrao){
+        if(this.jogo.explodir){
+          this.explodir();
+          return;
+        }
+        this.aser.volumeMusica(0.10);
+        
+        await this.aser.dizer(this.obterItemRandom(this.negativas));
+        this.aser.volumeMusica(0.28);
+        return;
+      }
+      this.aser.pararMusica();
+      this.limparLoop();
+      console.log("Desarmando ", this.jogo.bomba);
+      this.jogo.bomba.acionada = false;
+      this.jogo.bomba.desarmada = true;
+      this.jogo.bomba.explodida = false;
+      this.jogo.historico.push(this.jogo.bomba);
+      let tempb = this.jogo.bomba;
+      this.jogo.bomba = null;
+      this.jogo.status = 'intermission';
+      this.jogo.img = 'sucesso';
+      this.removerStatus();
+      await this.aser.playAudio(this.aser.ff7);
+      await this.aser.dizer(`Bomba ${tempb.nomeCor} Desarmada`);
+      this.salvarOffline();
+    }
+  }
+
+  negativas = ['Senha incorreta','Errou rá rá rá rá','Errou, tá pegando fogo bicho','incorreto','senha errada','errou a senha','rá rá rá rá rá errou meu parceiro rá rá',
+    'tenta de novo que você errou','É meu parceiro, hoje o mar não tá pra peixe','Digita direito porque a senha tá errada','Tá bom, mas agora digita a senha certa',
+    'Tá errada, parceiro','tá errada campeão','chegou na cara do gol mas errou','errou, mas errou pra caralho','você falhou em acertar','Você teve sucesso em sua falha'
+    , 'falhou, falha e pelo visto falhará','errou, erra e pelo visto errará'
+  ];
+  obterItemRandom(li){
+    return li[Math.floor(Math.random() * li.length)];
+  }
+
+  mais(){
+    if((this.jogo.tempoPadrao || this.jogo.tempoPadrao==0) && this.jogo.tempoPadrao<200)this.jogo.tempoPadrao+=0.5;
+  }
+  menos(){
+    if((this.jogo.tempoPadrao || this.jogo.tempoPadrao==0) && this.jogo.tempoPadrao>0)this.jogo.tempoPadrao-=0.5;
+  }
+
+  novaSenhaPadrao(){
+    this.painelSenha = Object.create(null);
+    this.painelSenha.tipo = 'padrao';
+    this.painelSenha.visivel = true;
   }
 
   novoJogo(){
@@ -80,7 +167,14 @@ export class BombComponent implements OnInit {
       this.telaArmar.cor = cor;
       this.telaArmar.visivel = true;
     }else{
-      this.chaveado.programar(this.jogo.tamanho,cor,this.jogo.bomba);
+      if(!this.jogo['teclado'])this.chaveado.programar(this.jogo.tamanho,cor,this.jogo.bomba);
+      if(this.jogo['teclado']){
+        this.painelSenha = Object.create(null);
+        this.painelSenha.tipo = 'armar';
+        setTimeout(()=>{
+          this.painelSenha.visivel = true;
+        },200);
+      }
     }
     
   }

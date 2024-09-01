@@ -38,6 +38,10 @@ export class AudioService {
     return this.playAudio(this.planted);
   }
 
+  volumeMusica(vol){
+    if(this.musicaAtual)this.musicaAtual.volume = vol;
+  }
+
   async dizer(texto:any){
     let speech = new SpeechSynthesisUtterance();
     // speech.lang = this.gameConfig.voz.lang;
