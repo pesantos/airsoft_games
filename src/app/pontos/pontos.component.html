@@ -37,6 +37,15 @@
         <h5>Numero de Times: {{game.numeroTimes}}</h5>
         <p-slider [(ngModel)]="game.numeroTimes" [min]="2" [max]="8"></p-slider>
     </div>
+    <div class="aninhado">
+        <h5>Configurar Pontos: ({{pontosTemp.length}}) </h5>
+        <input type="text" [(ngModel)]="nomePonto" [ngStyle]="{'width':'100%'}" pInputText />
+        <button pButton pRipple type="button" label="Add Ponto" [ngStyle]="{'width':'100%'}" (click)="addPonto()" class="p-button-raised p-button-success"></button>
+        <section>
+            <div class="item-ponto" *ngFor="let pt of pontosTemp">{{pt}}</div>
+        </section>
+        
+    </div>
 
     <div class="aninhado" style="text-align: center;">
         <h5>Horário de Término</h5>

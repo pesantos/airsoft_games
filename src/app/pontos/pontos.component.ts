@@ -407,6 +407,7 @@ export class PontosComponent implements OnInit {
       return;
     }
 
+    this.salvarOffline();
     this.fluxo = setTimeout(()=>{
       this.loop();
     },this.game.tempoLoop);
@@ -414,6 +415,8 @@ export class PontosComponent implements OnInit {
 
   async iniciar(){
     this.dialogo = true;
+    this.pontosTemp = [];
+    this.nomePonto = '';
   }
 
   processarFimDeJogo(){
@@ -485,7 +488,7 @@ export class PontosComponent implements OnInit {
    
 
     this.game.timer = parseInt(this.game.tempoPadrao+'');
-    if(this.game.localidades.length==0)this.game.timer=parseInt(this.game.timer.tempoPadraoFinal+'');
+    // if(this.game.localidades.length==0)this.game.timer=parseInt(this.game.timer.tempoPadraoFinal+'');
     this.setarTempoString();
   }
 
@@ -616,11 +619,15 @@ export class PontosComponent implements OnInit {
   }
 
   configurar(){
-
+    if(!this.pontosTemp.length){
+      this.dizer("É preciso configurar pelo menos um ponto de detonação");
+      return;
+    }
     this.salvarLog(null,"Jogo iniciado");
-    
+    this.game.localidades = JSON.parse(JSON.stringify(this.pontosTemp));
     this.game.tempoPadrao = this.game.minutosBomba*(1000*60);
-    this.game.tempoPadraoFinal = this.game.tempoPadrao+(1000*60*5);
+    this.game.tempoPadraoFinal = this.game.tempoPadrao*(1000*60*5);
+    
     for(let i = 0; i<this.game.numeroTimes;i++){
       let temp = this.cores.shift();
       this.game.osTimes.push(temp);
@@ -631,15 +638,23 @@ export class PontosComponent implements OnInit {
     this.dialogo = false;
     this.limpar();
     this.rodar();
+    console.log("Configuracao", this.game)
+    this.salvarOffline();
   }
 
 
 
-  
+  nomePonto:any;
+  pontosTemp:any =[];
+  addPonto(){
+    if(!this.nomePonto)return;
+    this.pontosTemp.push((this.nomePonto+'').trim().toUpperCase());
+    this.nomePonto = null;
+  }
 
 
   ngOnInit() {
-
+    this.pontosTemp = [];
     this.game = this.novoJogo();
     let d = localStorage.getItem(this.flagSave);
     if(d){
