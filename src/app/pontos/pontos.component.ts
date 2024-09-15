@@ -10,7 +10,7 @@ import { ɵBrowserAnimationBuilder } from '@angular/platform-browser/animations'
 export class PontosComponent implements OnInit {
 
   constructor() { }
-  cores = ['azul','vermelho','verde','preto','branco','cinza','amarelo','laranja'];
+  cores = ['azul','vermelho','verde','preto'];
   musicas = ['assets/007.mp3','assets/beebop.mp3','assets/impossible.mp3','assets/Beethoven9Synphony.mp3','assets/All-Along-The-WatchTower.mp3','assets/overture.mp3','assets/Bob-Dylan-The-Times-They-Are-A-Changin.mp3','assets/valquiria.mp3','assets/whiplash.mp3','assets/evangelion.mp3','assets/sold.mp3','assets/creedance.mp3'];
   musicas2 = [];
   flagSave: string = 'saveGamePontos';
@@ -618,6 +618,7 @@ export class PontosComponent implements OnInit {
     this.game.idLog++;
   }
 
+  times:any = [];
   configurar(){
     if(!this.pontosTemp.length){
       this.dizer("É preciso configurar pelo menos um ponto de detonação");
@@ -627,11 +628,11 @@ export class PontosComponent implements OnInit {
     this.game.localidades = JSON.parse(JSON.stringify(this.pontosTemp));
     this.game.tempoPadrao = this.game.minutosBomba*(1000*60);
     this.game.tempoPadraoFinal = this.game.tempoPadrao*(1000*60*5);
-    
-    for(let i = 0; i<this.game.numeroTimes;i++){
-      let temp = this.cores.shift();
-      this.game.osTimes.push(temp);
-    }
+    this.game.osTimes = [].concat(this.times);
+    // for(let i = 0; i<this.game.numeroTimes;i++){
+    //   let temp = this.cores.shift();
+    //   this.game.osTimes.push(temp);
+    // }
 
     this.setarTempo();
     this.game.iniciado = true;

@@ -1,5 +1,11 @@
-<div *ngIf="!game.iniciado" style="width: 90vw;text-align: center;font-family: 'Roboto';">
-    Versão 1.4 <br>
+<div *ngIf="!game.iniciado" style="width: 100%;text-align: center;font-family: 'Roboto';">
+    Versão 1.5 <br>
+    <div class="instrucao">
+        O jogo consiste em uma série de pontos que deve ser explodido de forma aleatório por 2 ou mais times.
+        O dispositivo possui um modo de transporte e um de detonaçao, e só deve ser movido quando em transporte, e acionado,
+        quando estiver no ponto apontado pelo dispositivo.
+        Ao fim dos pontos, vence o time que explodir a maioria deles.
+    </div>
     <button *ngIf="!game.iniciado" type="button" class="botao"  (click)="iniciar()" >Iniciar Jogo</button>
 </div>
 
@@ -34,13 +40,21 @@
     </div>
 
     <div class="aninhado">
-        <h5>Numero de Times: {{game.numeroTimes}}</h5>
-        <p-slider [(ngModel)]="game.numeroTimes" [min]="2" [max]="8"></p-slider>
+        <h5>Times Participanete: {{times.length}}</h5>
+        <!-- <p-slider [(ngModel)]="game.numeroTimes" [min]="2" [max]="8"></p-slider> -->
+        
+        <section>
+            <div *ngFor="let c of cores" style="display: flex; gap:4px">
+                <p-checkbox [value]="c" [(ngModel)]="times"></p-checkbox>
+                <div [class]="c+' fundo-time'">{{c}}</div>
+            </div>
+        </section>
+
     </div>
     <div class="aninhado">
         <h5>Configurar Pontos: ({{pontosTemp.length}}) </h5>
         <input type="text" [(ngModel)]="nomePonto" [ngStyle]="{'width':'100%'}" pInputText />
-        <button pButton pRipple type="button" label="Add Ponto" [ngStyle]="{'width':'100%'}" (click)="addPonto()" class="p-button-raised p-button-success"></button>
+        <button pButton pRipple type="button" label="Adicionar Ponto" [ngStyle]="{'width':'100%'}" (click)="addPonto()" class="p-button-raised p-button-info"></button>
         <section>
             <div class="item-ponto" *ngFor="let pt of pontosTemp">{{pt}}</div>
         </section>
@@ -57,7 +71,7 @@
     </div>
     
 
-    <div class="aninhado" style="width: 270px;margin-top: 20px;">
+    <div class="aninhado" style="width: 100%;margin-top: 20px;">
         <button pButton pRipple type="button" label="Iniciar" [ngStyle]="{'width':'100%'}" (click)="configurar()" class="p-button-raised p-button-success"></button>
     </div>
     
