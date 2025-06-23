@@ -16,75 +16,176 @@
     </div>
 </p-dialog>
 
+<section class="pai">
+    <div style="max-width: 522px;width: 100%;">
 
-<section *ngIf="jogo && jogo['status']=='novo'">
-    <div class="titulo">
-        Configuração do Sebastião
-    </div>
-    <div class="caixa-config">
-        <div class="label">
-            PONTOS DE TORTURA: {{jogo?.pontosTortura?.length}}
-        </div>
-        <div>
-            <button pButton pRipple type="button" label="Gerenciar Pontos de Tortura" [ngStyle]="{'width':'100%','height':'30px'}" 
-            (click)="pontos()" class="p-button-raised p-button-secondary"></button>
-        </div>
-    </div>
-    <div class="caixa-config">
-        <div class="label">
-            PONTOS DE PROTEÇÃO: {{jogo?.pontosProtecao?.length}}
-        </div>
-        <div>
-            <button pButton pRipple type="button" label="Gerenciar Pontos de Protecao" [ngStyle]="{'width':'100%','height':'30px'}" 
-            (click)="pontos('Protecao')" class="p-button-raised p-button-secondary"></button>
-        </div>
-    </div>
-    <div class="caixa-config">
-        <div class="label">
-            FRASES DE PROTEÇÃO: {{jogo?.frasesProtecao?.length}}
-        </div>
-        <div>
-            <button pButton pRipple type="button" label="Gerenciar Frases de Protecao" [ngStyle]="{'width':'100%','height':'30px'}" 
-            (click)="frases('Protecao')" class="p-button-raised p-button-succcess"></button>
-        </div>
-    </div>
-    <div class="caixa-config">
-        <div class="label">
-            FRASES DE TORTURA: {{jogo?.frasesTortura?.length}}
-        </div>
-        <div>
-            <button pButton pRipple type="button" label="Gerenciar Frases de Tortura" [ngStyle]="{'width':'100%','height':'30px'}" 
-            (click)="frases('Tortura')" class="p-button-raised p-button-succcess"></button>
-        </div>
-    </div>
-    <div class="caixa-config">
-        <div class="label">
-            FRASES NEUTRAS: {{jogo?.frasesNeutras?.length}}
-        </div>
-        <div>
-            <button pButton pRipple type="button" label="Gerenciar Frases Neutras" [ngStyle]="{'width':'100%','height':'30px'}" 
-            (click)="frases('Neutras')" class="p-button-raised p-button-succcess"></button>
-        </div>
-    </div>
-    <div class="caixa-config">
-        <div class="label">
-            FRASES QUEBRADO: {{jogo?.frasesQuebrado?.length}}
-        </div>
-        <div>
-            <button pButton pRipple type="button" label="Gerenciar Frases Quebrado" [ngStyle]="{'width':'100%','height':'30px'}" 
-            (click)="frases('Quebrado')" class="p-button-raised p-button-succcess"></button>
-        </div>
-    </div>
-    <div class="caixa-config">
-        <div class="label">
-            FRASES SECO: {{jogo?.frasesSeco?.length}}
-        </div>
-        <div>
-            <button pButton pRipple type="button" label="Gerenciar Frases Seco" [ngStyle]="{'width':'100%','height':'30px'}" 
-            (click)="frases('Seco')" class="p-button-raised p-button-succcess"></button>
-        </div>
+        <section *ngIf="status=='inicio'">
+            <section class="bt-principais">
+                <app-botao [texto]="'Novo \n Jogo'" [icone]="'fa fa-gamepad'" (acao)="criarJogo()"></app-botao>  
+            </section>
+            
+            <section *ngIf="perfis && perfis.length" class="campo-perfis">
+                <!-- <section class="perfis"> -->
+                    <!-- <app-botao *ngFor="let per of perfis" [texto]="'Editar '+per.id" [icone]="'fa fa-pencil'" (acao)="editarPerfil(per.valor)"></app-botao> -->
+                    <app-grid [lista]="perfis" [id]="'pr'" [mostrarPaginador]="false" [titulo]="'Perfis de Jogos'" [pai]="this"
+                            [campos]="[
+                                ['#','id','centralizado',50],
+                                ['DESCRICAO','nome',null,null]
+                                
+                            ]"
+                            [acoes]="[
+                                ['fa fa-pencil','Clique para remover','editarPerfil'],
+                                ['fa fa-trash','Clique para remover','excluirPerfil']
+                            ]"
+                        ></app-grid>
+                <!-- </section> -->
+            </section>
+        </section>
+        <section *ngIf="status=='novo'" >
+            <div class="titulo">
+                Configuração do Sebastião
+            </div>
+            <div class="caixa-config">
+                <div>
+    
+                </div>
+                <section>
+                    <div class="label">
+                            NOME DA CONFIGURACAO 
+                    </div>
+                    <div style="flex-grow: 1;">
+                            <div class="label">Descricao</div>
+                            <input type="text" [(ngModel)]="jogo.nome" [ngStyle]="{'width':'100%'}" pInputText />
+                    </div>
+                </section>
+            </div>
+            <div class="caixa-config">
+                <div class="nume">
+                    {{jogo?.pontosTortura?.length}}
+                </div>
+                <section>
+                    <div class="label">
+                        PONTOS DE TORTURA: 
+                    </div>
+                    <div>
+                        <button pButton pRipple type="button" label="Gerenciar Pontos de Tortura" [ngStyle]="{'width':'100%','height':'30px'}" 
+                        (click)="pontos()" class="p-button-raised p-button-secondary"></button>
+                    </div>
+                </section>
+            </div>
+            <div class="caixa-config">
+                <div class="nume">
+                    {{jogo?.pontosProtecao?.length}}
+                </div>
+                <section>
+                    <div class="label">
+                        PONTOS DE PROTEÇÃO: 
+                    </div>
+                    <div>
+                        <button pButton pRipple type="button" label="Gerenciar Pontos de Protecao" [ngStyle]="{'width':'100%','height':'30px'}" 
+                        (click)="pontos('Protecao')" class="p-button-raised p-button-secondary"></button>
+                    </div>
+                </section>
+            </div>
+            <div class="caixa-config">
+                <div class="nume">
+                    {{jogo?.frasesProtecao?.length}}
+                </div>
+                <section>
+                    <div class="label">
+                        FRASES DE PROTEÇÃO 
+                    </div>
+                    <div>
+                        <button pButton pRipple type="button" label="Gerenciar Frases de Protecao" [ngStyle]="{'width':'100%','height':'30px'}" 
+                        (click)="frases('Protecao')" class="p-button-raised p-button-succcess"></button>
+                    </div>
+                </section>
+            </div>
+            <div class="caixa-config">
+                <div class="nume">
+                    {{jogo?.frasesTortura?.length}}
+                </div>
+                <section>
+                    <div class="label">
+                        FRASES DE TORTURA
+                    </div>
+                    <div>
+                        <button pButton pRipple type="button" label="Gerenciar Frases de Tortura" [ngStyle]="{'width':'100%','height':'30px'}" 
+                        (click)="frases('Tortura')" class="p-button-raised p-button-succcess"></button>
+                    </div>
+                </section>
+            </div>
+            <div class="caixa-config">
+                <div class="nume">
+                    {{jogo?.frasesNeutras?.length}}
+                </div>
+                <section>
+                    <div class="label">
+                        FRASES NEUTRAS
+                    </div>
+                    <div>
+                        <button pButton pRipple type="button" label="Gerenciar Frases Neutras" [ngStyle]="{'width':'100%','height':'30px'}" 
+                        (click)="frases('Neutras')" class="p-button-raised p-button-succcess"></button>
+                    </div>
+                </section>
+            </div>
+            <div class="caixa-config">
+                <div class="nume">
+                    {{jogo?.frasesQuebrado?.length}}
+                </div>
+                <section>
+                    <div class="label">
+                        FRASES QUEBRADO
+                    </div>
+                    <div>
+                        <button pButton pRipple type="button" label="Gerenciar Frases Quebrado" [ngStyle]="{'width':'100%','height':'30px'}" 
+                        (click)="frases('Quebrado')" class="p-button-raised p-button-succcess"></button>
+                    </div>
+                </section>
+            </div>
+            <div class="caixa-config">
+                <div class="nume">
+                    {{jogo?.frasesSeco?.length}}
+                </div>
+                <section>
+                    <div class="label">
+                        FRASES SECO
+                    </div>
+                    <div>
+                        <button pButton pRipple type="button" label="Gerenciar Frases Seco" [ngStyle]="{'width':'100%','height':'30px'}" 
+                        (click)="frases('Seco')" class="p-button-raised p-button-succcess"></button>
+                    </div>
+                </section>
+            </div>
+            <div class="caixa-config">
+                <div class="nume">
+                    {{jogo?.senhasAgua?.length}}
+                </div>
+                <section>
+                    <div class="label">
+                        SENHAS PARA SEDE
+                    </div>
+                    <div>
+                        <button pButton pRipple type="button" label="Gerenciar Senhas Seco" [ngStyle]="{'width':'100%','height':'30px'}" 
+                        (click)="frases('Senha')" class="p-button-raised p-button-succcess"></button>
+                    </div>
+                </section>
+            </div>
+        
+            <div class="caixa-config">
+                <section class="botoes-config">
+                    <button pButton pRipple type="button" label="Salvar Configuracao" [ngStyle]="{'width':'100%','height':'30px'}" 
+                            (click)="salvarConfiguracao()" class="p-button-raised p-button-danger"></button>
+                    <button pButton pRipple type="button" label="Cancelar" [ngStyle]="{'width':'100%','height':'30px'}" 
+                            (click)="cancelarConfig()" class="p-button-raised p-button-secondary"></button>
+                    <button pButton pRipple type="button" label="Rodar JOGO" [ngStyle]="{'width':'100%','height':'30px'}" 
+                            (click)="rodarJogo()" class="p-button-raised p-button-succcess"></button>
+                </section>
+            </div>
+        </section>
     </div>
 </section>
+
 
 
 
@@ -157,7 +258,7 @@
                     ></app-grid>
                 </section>
         </section>
-        <section *ngIf="tela['tipo']=='frasesp'||tela['tipo']=='frasest'||tela['tipo']=='frasesn'||tela['tipo']=='frasesq'||tela['tipo']=='frasess'">
+        <section *ngIf="tela['tipo']=='frasesp'||tela['tipo']=='frasest'||tela['tipo']=='frasesn'||tela['tipo']=='frasesq'||tela['tipo']=='frasess'||tela['tipo']=='senhasa'">
                 <section class="alinhados">
                     <div style="flex-grow: 1;">
                         <div class="label">Descricao</div>
@@ -169,7 +270,7 @@
                 </section>
 
                 <section>
-                    <app-grid [lista]="jogo[mfrases[tela['tipo']]]" [id]="'frasep'" [mostrarPaginador]="false" [titulo]="'Frases'" [pai]="this"
+                    <app-grid [lista]="jogo[mfrases[tela['tipo']]]" [id]="'senhasa'" [mostrarPaginador]="false" [titulo]="'Frases'" [pai]="this"
                         [campos]="[
                             ['#','id','centralizado',50],
                             ['MINI','mini',null,null]

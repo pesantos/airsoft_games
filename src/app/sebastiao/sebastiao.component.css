@@ -12,4 +12,53 @@
     margin-top: 3px;
     border-radius: 4px;
     padding: 9px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.perfis{
+    display: flex;
+    gap: 11px;
+    flex-wrap: wrap;
+    padding: 5px;
+    width: 100%;
+}
+
+.bt-principais{
+    display: flex;
+    gap: 7px;
+    margin-block: 10px;
+}
+
+.botoes-config{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+}
+
+.campo-perfis{
+    padding: 9px;
+    margin-top: 12px;
+    border: dashed 2px gray;
+    border-radius: 7px;
+    width: 100%;
+}
+
+.pai{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.nume{
+    font-family: 'Roboto';
+    font-weight: 711;
+    font-size: 40px;
+    color: gray;
+    width: 91px;
+    text-align: center;
+    border: dashed 1px;
+    border-radius: 5px;
 }

@@ -15,12 +15,27 @@ export class SebastiaoComponent implements OnInit {
 
   ngOnInit() {
     this.iniciar();
+    this.carregarJogos();
     this.jogo = this.novoJogo();
     let d = localStorage.getItem(this.flagSave);
     console.log("REstaurar ", d);
     if(d){
       this.restore = true;
     }
+  }
+
+  criarJogo(){
+    this.jogo = this.novoJogo();
+    this.status = 'novo';
+
+  }
+
+  cancelarConfig(){
+    this.status = 'inicio';
+  }
+
+  rodarJogo(){
+    this.status = 'jogando';
   }
 
   iniciar(){
@@ -31,6 +46,7 @@ export class SebastiaoComponent implements OnInit {
   }
   vozes = [];
   jogo:any;
+  status:string = 'inicio';
   loopando:any;
   flagSave: string = 'sebastiao_game';
   restore: boolean = false;
@@ -45,6 +61,7 @@ export class SebastiaoComponent implements OnInit {
     j.frasesProtecao = [];
     j.frasesNeutras = [];
     j.frasesQuebrado = [];
+    j.senhasAgua = [];
     j.frasesSeco = [];
     j.config = Object.create(null);
     //configurar
@@ -57,6 +74,7 @@ export class SebastiaoComponent implements OnInit {
     'frasesn':'frasesNeutras',
     'frasesq':'frasesQuebrado',
     'frasess':'frasesSeco',
+    'senhasa':'senhasAgua'
   }
 
   salvarOffline(){
@@ -81,7 +99,71 @@ export class SebastiaoComponent implements OnInit {
     this.restore = false;
   }
 
-  
+  perfis:any = [];
+  carregarJogos(){
+    this.perfis = null;
+    let ids = 1;
+    let ob = localStorage.getItem('jogos');
+    if(ob){
+      ob = JSON.parse(ob);
+      let lista = [];
+      Object.keys(ob).forEach(k=>{
+        lista.push({
+          id:ids,
+          nome:ob[k]['nome'],
+          valor:ob[k]
+        });
+        ids++;
+      });
+      this.perfis = lista;
+      console.log("Os perfils ", this.perfis);
+    }
+
+  }
+
+  editarPerfil(per:any){
+    this.status = 'novo';
+    console.log("O PERFIL ", per);
+    this.jogo = per.valor;
+  }
+
+  excluirPerfil(per:any){
+   
+    this.promp.confirm({
+      message: `DESEJA EXCLUIR O PERFIL #${per.id}?`,
+      header: "Manuseio de Perfil",
+      key:'principal',
+      acceptLabel:'EXCLUIR',
+      rejectLabel:'cancelar',
+      accept: () => {
+        const ob = localStorage.getItem('jogos');
+        const nv = JSON.parse(ob);
+        delete nv[this.util.TEXTO(per.nome)];
+        localStorage.setItem('jogos',JSON.stringify(nv)); 
+        this.carregarJogos();
+      },
+      reject: ()=>{
+        
+      }
+    });
+  }
+
+
+  salvarConfiguracao(){
+    if(!this.jogo['nome']){
+      this.util.toast('e','Informe o nome da configuração');
+      return;
+    }
+    const ob = localStorage.getItem('jogos');
+    if(!ob)localStorage.setItem('jogos',JSON.stringify(Object.create(null)));
+    if(ob){
+      const nv = JSON.parse(ob);
+      nv[this.util.TEXTO(this.jogo.nome)] = this.jogo;
+      localStorage.setItem('jogos',JSON.stringify(nv));
+    }
+    this.carregarJogos();
+    this.status = 'inicio';
+  }
 
   tela:any = Object.create(null);
   pontos(tipo='Tortura'){
@@ -103,6 +185,7 @@ export class SebastiaoComponent implements OnInit {
     if(tipo=='Neutras')this.tela.tipo ='frasesn';
     if(tipo=='Quebrado')this.tela.tipo ='frasesq';
     if(tipo=='Seco')this.tela.tipo ='frasess';
+    if(tipo=='Senha')this.tela.tipo ='senhasa';
     this.tela.titulo = `Frases ${tipo}`;
     this.tela.elemento = Object.create(null);
     this.tela.visivel = true;
@@ -149,6 +232,11 @@ export class SebastiaoComponent implements OnInit {
         if(this.tela.tipo=='frasess'){
           this.jogo.frasesSeco = this.jogo.frasesSeco.filter((i:any)=>i.id!=ponto.id);
           this.jogo.frasesSeco = this.util.clone(this.jogo.frasesSeco);
+          return;
+        }
+        if(this.tela.tipo=='senhasa'){
+          this.jogo.senhasAgua = this.jogo.senhasAgua.filter((i:any)=>i.id!=ponto.id);
+          this.jogo.senhasAgua = this.util.clone(this.jogo.senhasAgua);
           return;
         }
       }
@@ -228,6 +316,12 @@ export class SebastiaoComponent implements OnInit {
       this.jogo.frasesSeco.push(novo);
       this.tela.elemento = Object.create(null);
       this.jogo.frasesSeco = this.util.clone(this.jogo.frasesSeco);
+      return;
+    }
+    if(this.tela.tipo=='senhasa'){
+      this.jogo.senhasAgua.push(novo);
+      this.tela.elemento = Object.create(null);
+      this.jogo.senhasAgua = this.util.clone(this.jogo.senhasAgua);
       return;
     }
     console.log("JOGO ", this.jogo);
