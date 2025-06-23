@@ -29,17 +29,18 @@
     position: relative;
     bottom: 10px;
     text-indent: 5px;
+    overflow-y: auto;
+    height: 94px;
 }
 
 .caixa{
     font-family: 'SEGOE UI';
     border-radius: 9px;
     width: 100%;
-    max-width: 46%;
-    height: 290px;
-    margin-top: 14px;
+    max-width: 180px;
+    height: 190px;
     text-align: center;
     font-weight: 300;
     font-size: 18px;
-    cursor:pointer;
+    cursor: pointer;
 }

@@ -1,0 +1,185 @@
+<p-dialog header="Restaurar Jogo" [(visible)]="restore">
+    Deseja restaurar o jogo que estava em andamento?
+    <div class="aninhado" style="width: 270px;margin-top: 20px;">
+        <button pButton pRipple type="button" label="LIMPAR" [ngStyle]="{'width':'100%'}" (click)="limpar()" class="p-button-raised p-button-danger"></button>
+    </div>
+
+    
+    <div class="aninhado" style="width: 270px;margin-top: 20px;">
+        <button pButton pRipple type="button" label="CANCELAR" [ngStyle]="{'width':'100%'}" (click)="cancelar()" class="p-button-raised p-button-info"></button>
+    </div>
+
+    
+
+    <div class="aninhado" style="width: 270px;margin-top: 20px;">
+        <button pButton pRipple type="button" label="RESTAURAR" [ngStyle]="{'width':'100%'}" (click)="restaurar()" class="p-button-raised p-button-success"></button>
+    </div>
+</p-dialog>
+
+
+<section *ngIf="jogo && jogo['status']=='novo'">
+    <div class="titulo">
+        Configuração do Sebastião
+    </div>
+    <div class="caixa-config">
+        <div class="label">
+            PONTOS DE TORTURA: {{jogo?.pontosTortura?.length}}
+        </div>
+        <div>
+            <button pButton pRipple type="button" label="Gerenciar Pontos de Tortura" [ngStyle]="{'width':'100%','height':'30px'}" 
+            (click)="pontos()" class="p-button-raised p-button-secondary"></button>
+        </div>
+    </div>
+    <div class="caixa-config">
+        <div class="label">
+            PONTOS DE PROTEÇÃO: {{jogo?.pontosProtecao?.length}}
+        </div>
+        <div>
+            <button pButton pRipple type="button" label="Gerenciar Pontos de Protecao" [ngStyle]="{'width':'100%','height':'30px'}" 
+            (click)="pontos('Protecao')" class="p-button-raised p-button-secondary"></button>
+        </div>
+    </div>
+    <div class="caixa-config">
+        <div class="label">
+            FRASES DE PROTEÇÃO: {{jogo?.frasesProtecao?.length}}
+        </div>
+        <div>
+            <button pButton pRipple type="button" label="Gerenciar Frases de Protecao" [ngStyle]="{'width':'100%','height':'30px'}" 
+            (click)="frases('Protecao')" class="p-button-raised p-button-succcess"></button>
+        </div>
+    </div>
+    <div class="caixa-config">
+        <div class="label">
+            FRASES DE TORTURA: {{jogo?.frasesTortura?.length}}
+        </div>
+        <div>
+            <button pButton pRipple type="button" label="Gerenciar Frases de Tortura" [ngStyle]="{'width':'100%','height':'30px'}" 
+            (click)="frases('Tortura')" class="p-button-raised p-button-succcess"></button>
+        </div>
+    </div>
+    <div class="caixa-config">
+        <div class="label">
+            FRASES NEUTRAS: {{jogo?.frasesNeutras?.length}}
+        </div>
+        <div>
+            <button pButton pRipple type="button" label="Gerenciar Frases Neutras" [ngStyle]="{'width':'100%','height':'30px'}" 
+            (click)="frases('Neutras')" class="p-button-raised p-button-succcess"></button>
+        </div>
+    </div>
+    <div class="caixa-config">
+        <div class="label">
+            FRASES QUEBRADO: {{jogo?.frasesQuebrado?.length}}
+        </div>
+        <div>
+            <button pButton pRipple type="button" label="Gerenciar Frases Quebrado" [ngStyle]="{'width':'100%','height':'30px'}" 
+            (click)="frases('Quebrado')" class="p-button-raised p-button-succcess"></button>
+        </div>
+    </div>
+    <div class="caixa-config">
+        <div class="label">
+            FRASES SECO: {{jogo?.frasesSeco?.length}}
+        </div>
+        <div>
+            <button pButton pRipple type="button" label="Gerenciar Frases Seco" [ngStyle]="{'width':'100%','height':'30px'}" 
+            (click)="frases('Seco')" class="p-button-raised p-button-succcess"></button>
+        </div>
+    </div>
+</section>
+
+
+
+<p-sidebar [(visible)]="tela['visivel']" [style]="tela['estilo']"   position="bottom">
+    <div class="titulo">
+        {{tela['titulo']}}
+    </div>
+    <section *ngIf="tela['visivel']">
+        <section *ngIf="tela['tipo']=='pontost'">
+                <section>
+                    <div class="label">
+                        TEMPO (MINUTOS)
+                    </div>
+                    <div>
+                        <input pInputText type="number" [(ngModel)]="tela.elemento.tempo">
+                    </div>
+                </section>
+                <section class="alinhados">
+                    <div style="flex-grow: 1;">
+                        <div class="label">Descricao</div>
+                        <input type="text" [(ngModel)]="tela.elemento.descricao" [ngStyle]="{'width':'100%'}" pInputText />
+                    </div>
+                    <div>
+                        <app-botao [icone]="'fa fa-plus'" [texto]="'ADD'" (acao)="adicionarPonto()"></app-botao>
+                    </div>
+                </section>
+
+                <section>
+                    <app-grid [lista]="jogo.pontosTortura" [id]="'dasda'" [mostrarPaginador]="false" [titulo]="'Pontos de Tortura'" [pai]="this"
+                        [campos]="[
+                            ['#','id','centralizado',50],
+                            ['DESCRICAO','descricao',null,null],
+                            ['TEMPO','tempo','centralizado',100]
+                        ]"
+                        [acoes]="[
+                            ['fa fa-trash','Clique para remover','removerPonto']
+                        ]"
+                    ></app-grid>
+                </section>
+        </section>
+        <section *ngIf="tela['tipo']=='pontosp'">
+                <section>
+                    <div class="label">
+                        TEMPO (MINUTOS)
+                    </div>
+                    <div>
+                        <input pInputText type="number" [(ngModel)]="tela.elemento.tempo">
+                    </div>
+                </section>
+                <section class="alinhados">
+                    <div style="flex-grow: 1;">
+                        <div class="label">Descricao</div>
+                        <input type="text" [(ngModel)]="tela.elemento.descricao" [ngStyle]="{'width':'100%'}" pInputText />
+                    </div>
+                    <div>
+                        <app-botao [icone]="'fa fa-plus'" [texto]="'ADD'" (acao)="adicionarPonto()"></app-botao>
+                    </div>
+                </section>
+
+                <section>
+                    <app-grid [lista]="jogo.pontosProtecao" [id]="'dasdsa'" [mostrarPaginador]="false" [titulo]="'Pontos de Proteção'" [pai]="this"
+                        [campos]="[
+                            ['#','id','centralizado',50],
+                            ['DESCRICAO','descricao',null,null],
+                            ['TEMPO','tempo','centralizado',100]
+                        ]"
+                        [acoes]="[
+                            ['fa fa-trash','Clique para remover','removerPonto']
+                        ]"
+                    ></app-grid>
+                </section>
+        </section>
+        <section *ngIf="tela['tipo']=='frasesp'||tela['tipo']=='frasest'||tela['tipo']=='frasesn'||tela['tipo']=='frasesq'||tela['tipo']=='frasess'">
+                <section class="alinhados">
+                    <div style="flex-grow: 1;">
+                        <div class="label">Descricao</div>
+                        <input type="text" [(ngModel)]="tela.elemento.descricao" [ngStyle]="{'width':'100%'}" pInputText />
+                    </div>
+                    <div>
+                        <app-botao [icone]="'fa fa-plus'" [texto]="'ADD'" (acao)="adicionarFrase()"></app-botao>
+                    </div>
+                </section>
+
+                <section>
+                    <app-grid [lista]="jogo[mfrases[tela['tipo']]]" [id]="'frasep'" [mostrarPaginador]="false" [titulo]="'Frases'" [pai]="this"
+                        [campos]="[
+                            ['#','id','centralizado',50],
+                            ['MINI','mini',null,null]
+                        ]"
+                        [acoes]="[
+                            ['fa fa-trash','Clique para remover','removerPonto'],
+                            ['fa fa-play','Clique para remover','falar']
+                        ]"
+                    ></app-grid>
+                </section>
+        </section>
+    </section>
+</p-sidebar>

@@ -5,8 +5,11 @@ import { Injectable } from '@angular/core';
 })
 export class AudioService {
 
-  constructor() { }
-
+  constructor() {
+    this.vozes = window.speechSynthesis.getVoices();
+   }
+  FALADOR:any;
+  vozes:any;
   musicaAtual = null;
   cogumelo = new Audio('assets/cogumelo.wav');
   beep_sucesso = new Audio('assets/beep_sucesso.mp3');
@@ -42,18 +45,20 @@ export class AudioService {
     if(this.musicaAtual)this.musicaAtual.volume = vol;
   }
 
-  async dizer(texto:any){
-    let speech = new SpeechSynthesisUtterance();
+  async dizer(texto:any,velocidade = 1.4,tom = 0.6){
+    console.log("vOZES ", this.vozes);
+    if(!this.FALADOR)this.FALADOR = new SpeechSynthesisUtterance();
+    
     // speech.lang = this.gameConfig.voz.lang;
-    speech.text = texto+'';
-    speech.pitch = 0.6;
-    speech.rate = 1.4;
-    speech.volume = 1;
+    this.FALADOR.text = texto+'';
+    this.FALADOR.pitch = tom;
+    this.FALADOR.rate = velocidade;
+    this.FALADOR.volume = 1;
     // speech.voice = this.gameConfig.voz;
-    window.speechSynthesis.speak(speech);
+    window.speechSynthesis.speak(this.FALADOR);
   
     return new Promise(resolve=>{
-      speech.onend = resolve;
+      this.FALADOR.onend = resolve;
     });
     
   }

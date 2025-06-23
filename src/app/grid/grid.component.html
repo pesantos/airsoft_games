@@ -1,0 +1,128 @@
+<section *ngIf="mostrar" class="componente">
+    <section class="cabecalho-grid">
+        <div *ngIf="totalizar" class="total">
+            TOTAL: {{lista.length}}
+        </div>
+        <div *ngIf="titulo" class="titulo-tab"> 
+            {{titulo}}
+        </div>
+    </section>
+    <p-table [id]="id" [resizableColumns]="true" [ngStyle]="{width:'100%',zIndex:'8'}" [autoLayout]="true"  [value]="proxy"[paginator]="mostrarPaginador" [rows]="paginacao" [columns]="camposI" (sortFunction)="util.customSort($event)" [styleClass]="'p-datatable-sm p-datatable-gridlines p-datatable-striped'" [globalFilterFields]="[]" sortMode="multiple" [customSort]="true">
+        <ng-template pTemplate="header" let-columns>
+            <tr style="line-height: 8px;font-size: 11px;">
+                <th [ngStyle]="larg[ca[1]]" [pSortableColumn]="ca[1]" *ngFor="let ca of columns">{{ca[0]}}</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+            <tr style="font-size: 11px;font-weight: 534;">
+                <td *ngFor="let col of columns" >
+                    <div *ngIf="col[2]==null">
+                        {{util.TEXTO(rowData[col[1]])}}
+                    </div>
+                    <div *ngIf="col[2]=='data'" style="text-align: center;">
+                        {{rowData[col[1]]| dataMomento}}
+                    </div>
+                    <div *ngIf="col[2]=='timestamp'" style="text-align: center;">
+                        {{rowData[col[1]]| timestamp}}
+                    </div>
+                    <div *ngIf="col[2]=='quantidade'" class="quantidade" style="text-align: center;">
+                        {{rowData[col[1]]}}
+                    </div>
+                    <div *ngIf="col[2]=='labelforte'" class="labelforte" style="text-align: center;">
+                        {{rowData[col[1]]}}
+                    </div>
+                    <div *ngIf="col[2]=='centralizado'" style="text-align: center;">
+                        {{rowData[col[1]]}}
+                    </div>
+                    <div *ngIf="col[2]=='pequeno'" style="font-size: 9px;">
+                        {{rowData[col[1]]}}
+                    </div>
+
+                    <div *ngIf="col[2]=='botao'" style="text-align: center;">
+                        
+                        <div *ngIf="rowData[col[1]]" (click)="acao(rowData[col[1]],'info')" class="bt-ac-pequeno" pTooltip="Clique para informações">
+                            <i class="fa fa-info"></i>
+                        </div>
+                    </div>
+
+                    <div *ngIf="col[2]=='editavel'" style="text-align: center;max-width: 100%;" pEditableColumn>
+                        <p-cellEditor style="max-width: 60px;color:rgb(106, 101, 101)">
+                            <ng-template pTemplate="input">
+                                <input pInputText type="text" [ngStyle]="{'text-align':'center','width':'60px','font-size':'10px','padding-inline':'0px'}" (ngModelChange)="alterouLinha(rowData)" [(ngModel)]="rowData[col[1]]">
+                            </ng-template>
+                            <ng-template pTemplate="output">
+                                    <div>
+                                        {{rowData[col[1]]}}
+                                    </div>
+                            </ng-template>
+                        </p-cellEditor>
+                    </div>
+
+
+                    <div *ngIf="col[2]=='dinheiro'" style="text-align: right;">
+                        {{rowData[col[1]]| dinheiro}}
+                    </div>
+                    <div *ngIf="col[2]=='asset'" style="text-align: right;">
+                        <img [src]="'assets/'+rowData[col[1]]" style="width: 30px;" alt="log">
+                        
+                    </div>
+                   
+                    <div *ngIf="col[2]=='documento'" style="display: flex;justify-content: center;">
+                        <div *ngIf="rowData[col[1]]" (click)="documento(rowData[col[1]])" class="botao" [pTooltip]="'Clique para exibir o documento'">
+                                <i [class]="'fa fa-file'"></i>
+                        </div>
+                    </div>
+                    <div *ngIf="col[2]=='sim'" style="text-align: center;" [class]="rowData[col[1]]=='s'?'sim':'nao'">
+                        {{rowData[col[1]]=='s'?'SIM':'NÃO'}}
+                    </div>
+                    <div *ngIf="col[2]=='ok'" style="text-align: center;">
+                        <i *ngIf="rowData[col[1]]=='s'" class="fa fa-check-circle-o positivo" aria-hidden="true"></i>
+                        <i *ngIf="rowData[col[1]]=='n'" class="fa fa-times-circle-o negativo" aria-hidden="true"></i>
+                    </div>
+                    <div *ngIf="col[2]=='oknull'" style="text-align: center;">
+                        <i *ngIf="!!rowData[col[1]]" class="fa fa-check-circle-o positivo" aria-hidden="true"></i>
+                        <i *ngIf="!rowData[col[1]]" class="fa fa-times-circle-o negativo" aria-hidden="true"></i>
+                    </div>
+                    <div *ngIf="col[2]=='bandeira'" style="text-align: center;" class="divisor">
+                        <div *ngIf="rowData[col[1]]=='Mastercard'">
+                            
+                            <i class="fa fa-cc-mastercard pular ic"  aria-hidden="true"></i>
+                            Mastercard
+                        </div>
+                        <div *ngIf="rowData[col[1]]=='Visa'">
+                            <i class="fa fa-cc-visa pular ic"  aria-hidden="true"></i>Visa
+                        </div>
+                        <div *ngIf="rowData[col[1]]=='Amex'">
+                            <i class="fa fa-cc-amex pular ic"  aria-hidden="true"></i>Amex
+                        </div>
+                        <div *ngIf="rowData[col[1]]=='Discover'">
+                            <i class="fa fa-cc-discover pular ic"  aria-hidden="true"></i>Discover
+                        </div>
+                        <div *ngIf="rowData[col[1]]=='Diners'">
+                            <i class="fa fa-cc-diners-club pular ic"  aria-hidden="true"></i>Diners
+                        </div>
+                            
+                        <div *ngIf="rowData[col[1]]=='JCB'">
+                            <i class="fa fa-cc-jcb pular ic" aria-hidden="true"></i>JCB
+                        </div>
+                    </div>
+                    
+                    <div *ngIf="col[2]=='avatar'" style="text-align: center;">
+                        <div style="width: 27px;">
+                            <app-avatar [usuario]="{id:'xyz',foto:rowData[col[1]]}"></app-avatar>
+                        </div>
+                    </div>
+                    <div *ngIf="col[2]=='botoes'">
+                        <section style="display: flex;justify-content: center;gap:3px">
+                            <div *ngFor="let bt of botoes">
+                                <div  *ngIf="bt.mostrar" (click)="acao(rowData,bt.acao)" class="botao" [pTooltip]="bt.texto">
+                                    <i [class]="bt.icone"></i>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</section>

@@ -1,0 +1,15 @@
+.alinhados{
+    display: flex;
+    gap: 7px;
+    align-items: center;
+    border-bottom: dashed 2px gray;
+    padding-bottom: 9px;
+}
+
+.caixa-config{
+    margin-inline: 10px;
+    border: dashed 1px black;
+    margin-top: 3px;
+    border-radius: 4px;
+    padding: 9px;
+}

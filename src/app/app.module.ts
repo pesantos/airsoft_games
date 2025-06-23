@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { ContadorComponent } from './contador/contador.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {InputTextModule} from 'primeng/inputtext';
-
+import { TableModule } from 'primeng/table';
 import {InputSwitchModule} from 'primeng/inputswitch';
 import {SliderModule} from 'primeng/slider';
 import {DropdownModule} from 'primeng/dropdown';
@@ -33,10 +33,18 @@ import {TabViewModule} from 'primeng/tabview';
 import {RadioButtonModule} from 'primeng/radiobutton';
 import { PadraoComponent } from './padrao/padrao.component';
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
-import {ConfirmationService} from 'primeng/api';
+import {ConfirmationService,MessageService} from 'primeng/api';
 import {CheckboxModule} from 'primeng/checkbox';
 import { BombComponent } from './bomb/bomb.component';
 import { ChaveadoComponent } from './chaveado/chaveado.component';
+import { SebastiaoComponent } from './sebastiao/sebastiao.component';
+import { GridComponent } from './grid/grid.component';
+import { DataMomentoPipe } from './data-momento.pipe';
+import { TimestampPipe } from './timestamp.pipe';
+import { DinheiroPipe } from './dinheiro.pipe';
+import { BotaoComponent } from './botao/botao.component';
+import { UtilService } from './util.service';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
   declarations: [
@@ -54,11 +62,19 @@ import { ChaveadoComponent } from './chaveado/chaveado.component';
     SixComponent,
     PadraoComponent,
     BombComponent,
-    ChaveadoComponent
+    ChaveadoComponent,
+    SebastiaoComponent,
+    GridComponent,
+    DataMomentoPipe,
+    TimestampPipe,
+    DinheiroPipe,
+    BotaoComponent
   ],
   imports: [
     BrowserModule,
+    ToastModule,
     DialogModule,
+    TableModule,
     DropdownModule,
     InputSwitchModule,
     FormsModule,
@@ -79,7 +95,7 @@ import { ChaveadoComponent } from './chaveado/chaveado.component';
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   schemas: [ NO_ERRORS_SCHEMA ],
-  providers: [PrimeNGConfig,ConfirmationService],
+  providers: [PrimeNGConfig,ConfirmationService,MessageService,UtilService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

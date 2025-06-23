@@ -1,0 +1,103 @@
+.componente{
+    margin-inline:2px;
+}
+
+.sim{
+    font-weight: 900;
+    color: green;
+}
+
+.total{
+    font-weight: 831;
+    font-size: 17px;
+    color: #4035c2;
+    text-align: left;
+    border:dashed 1px;
+    padding-inline:5px;
+}
+
+.titulo-tab{
+    font-family: 'Roboto';
+    font-weight: 936;
+    font-size: 16px;
+    letter-spacing: -0.011em;
+    text-transform: uppercase;
+    color: rgb(49, 47, 47);
+    flex-grow: 1;
+    border: dashed 1px rgb(114, 108, 108);
+    padding-inline: 4px;
+}
+
+.cabecalho-grid{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    
+}
+
+.botao{
+    border:1px solid rgb(46, 45, 45);
+  padding:2px;
+  border-radius:4px;
+  width: 22px;
+  cursor: pointer;
+  height: 22px;
+  aspect-ratio: 1/1;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  margin-block:-7px;
+}
+
+.ic{
+    font-size: 19px;
+    line-height: 0px;
+}
+
+.divisor div{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    text-align: center;
+}
+
+.nao{
+    font-weight: 900;
+    color: red;
+}
+
+.negativo{
+    font-size: 25px;
+    line-height: 0px;
+    position: relative;
+    top: 5px;
+    color: red;
+}
+
+.quantidade{
+    text-align: center;
+    font-size: 26px;
+    font-weight: 791;
+    line-height: 0px;
+    color: #4a4343;
+    text-transform: uppercase;
+}
+
+.labelforte{
+    text-align: center;
+    font-size: 18px;
+    font-weight: 791;
+    line-height: 0px;
+    color: #4a4343;
+    text-transform: uppercase;
+}
+
+.positivo{
+    font-size: 25px;
+    line-height: 0px;
+    position: relative;
+    top: 5px;
+    color: green;
+}

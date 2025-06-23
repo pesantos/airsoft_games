@@ -10,6 +10,7 @@ import { ContadorComponent } from './contador/contador.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { BombComponent } from './bomb/bomb.component';
+import { SebastiaoComponent } from './sebastiao/sebastiao.component';
 
 
 
@@ -21,6 +22,7 @@ const routes: Routes = [
   { path: 'teste', component: TesteComponent },
   { path: 'six', component: SixComponent },
   { path: 'bomb', component: BombComponent },
+  { path: 'seba', component: SebastiaoComponent },
   { path: 'maleta', component: MaletaComponent },
   { path: 'cabo', component: CaboComponent },
   { path: 'seletor', component: SeletorComponent },
